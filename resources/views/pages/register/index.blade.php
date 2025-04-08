@@ -54,7 +54,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($user as $item)
-                                    <tr>
+                                    <tr onclick="location.href='{{ route('pendaftar.show', ['user' => $item->id]) }}'" style="cursor: pointer;">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <img src="{{ asset('storage/' . $item->profile_picture) }}" alt="" style="width: 50px; height: 50px;">

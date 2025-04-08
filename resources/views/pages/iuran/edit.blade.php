@@ -28,12 +28,12 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="bulan" class="text-white" style="font-weight: bold;">Bulan</label>
+                            <label for="bulan" class="text-white" style="font-weight: bold;">Tahun</label>
                             <input  type="text"
                             class="form-control"
-                            name="bulan"
-                            id="bulan"
-                            value="{{ $iuran->bulan }}" 
+                            name="tahun"
+                            id="tahun"
+                            value="{{ $iuran->tahun }}" 
                             onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';"
                             required>
                         </div>

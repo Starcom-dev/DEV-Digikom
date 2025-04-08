@@ -21,7 +21,7 @@
       <div class="card p-2 mt-5" style="background-color: #fff">
         
         <div class="d-flex pl-4 border-bottom" style="height: 7rem;">
-          <div class="" style="transform: translate(0, -50px)">
+          <div class="flex-grow-1" style="transform: translate(0, -50px)">
               <img src="<?php echo e(asset('storage/' . $user->profile_picture)); ?>" alt="Profile Picture" class="img-thumbnail rounded-circle" style="width: 150px; height: 150px;" />
           </div>
           <div class="ml-4 mt-4 d-flex justify-content-between" style="width: 100%">
@@ -76,10 +76,10 @@
           <div class="mt-2 flex-grow-1 m-2" style="background-color: #e6e6e6; border-radius: 10px; padding: 15px;">
             <div class="text-center" style="width: 100%">
               	<?php if($user->ktp_picture != null): ?>
-            		<img src="<?php echo e(asset('storage/' . $user->ktp_picture)); ?>" class="img-thumbnail" style="width: 20rem" alt="ktp_picture"/>
+            		<img src="<?php echo e(asset('storage/' . $user->ktp_picture)); ?>" class="img-thumbnail" style="width: 20rem; height: 10rem; object-fit:cover;" alt="ktp_picture"/>
               		<a class="btn btn-sm btn-primary ml-2" href="<?php echo e(asset('storage/' . $user->ktp_picture)); ?>" target="_blank">🔎 Lihat Detail</a>
               	<?php else: ?>
-              		<img src="<?php echo e(asset('assets/ktp_default.png')); ?>" class="img-thumbnail" style="width: 20rem" alt="ktp_picture"/>
+              		<img src="<?php echo e(asset('assets/ktp_default.png')); ?>" class="img-thumbnail" style="width: 20rem; height:10rem;" alt="ktp_picture"/>
               	<?php endif; ?>
             </div>
             <p class="mt-2">No. KTP : <?php echo e($user->nomor_ktp); ?> </p>

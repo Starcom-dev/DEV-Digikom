@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            // Ambil data user yang sedang login nya
+            // Ambil data user yang sedang login
             $getAuthToken = JWTAuth::parseToken()->authenticate();
           	$getUser = User::with(['pekerjaan', 'pendidikan', 'agama', 'creator'])->find($getAuthToken->id);
 

@@ -29,6 +29,7 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::resource('/anggota', \App\Http\Controllers\UserController::class);
   	Route::get('/pendaftar', [RegisterController::class, 'index'])->name('pendaftar');
+    Route::get('/pendaftar/{user}', [RegisterController::class, 'show'])->name('pendaftar.show');
   	Route::put('/pendaftar/update/{id}/{status}', [RegisterController::class, 'update'])->name('update_pendaftar');
   
     Route::resource('/pengurus', \App\Http\Controllers\PengurusController::class);

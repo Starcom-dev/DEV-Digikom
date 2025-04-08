@@ -33,20 +33,12 @@ class RegisterController extends Controller
         return view('pages.register.index', compact('user', 'search', 'sortBy', 'order'));
     }
 
-    public function update($id, $status)
+	public function show(User $user)
     {
-        //cek apakah user by id
-        $user = User::find($id);
-        if(!$user){
-          return abort(404, 'User not found');
-        }
-        $status_code = $status === 'approve' ? 1 : 0;
-        $user->status = $status_code;
-        $user->save();
-        return redirect()->route('pendaftar')->with('success', 'pendaftar '. ($status_code === 1 ? 'approved!' : 'rejected!'));
+     	$user->load(['pendidikan', 'agama', 'pekerjaan']);
+      	return view('pages.register.show', compact('user'));
     }
     
-
     public function destroy($id)
     {
         $user = user::findOrFail($id); // Ambil user berdasarkan ID
@@ -55,6 +47,7 @@ class RegisterController extends Controller
 
         return redirect()->route('anggota.index')->with('success', 'user berhasil dihapus!');
     }
+
 
     public function toggleSuspend($id)
     {

@@ -105,7 +105,7 @@
               </div>
       
       		<div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                <div class="card" onclick="redirectToBerita()" style="cursor: pointer;">
+                <div class="card" onclick="redirectToPendaftar()" style="cursor: pointer;">
                   <div class="card-body">
                     <div class="row">
                       <div class="col-9">

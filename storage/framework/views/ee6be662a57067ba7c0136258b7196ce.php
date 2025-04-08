@@ -1,6 +1,6 @@
-<?php echo $__env->make('components.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('components.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('components.navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('components.header', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('components.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     
 <!-- partial -->
@@ -55,7 +55,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $__currentLoopData = $user; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <tr>
+                                    <tr onclick="location.href='<?php echo e(route('pendaftar.show', ['user' => $item->id])); ?>'" style="cursor: pointer;">
                                         <td><?php echo e($loop->iteration); ?></td>
                                         <td>
                                             <img src="<?php echo e(asset('storage/' . $item->profile_picture)); ?>" alt="" style="width: 50px; height: 50px;">

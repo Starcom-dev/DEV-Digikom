@@ -30,7 +30,7 @@
               <p>{{ $user->email }}</p>
             </div>
           	<div>
-          		<button onclick="window.location.href='{{ route('anggota.index') }}'" class="btn btn-primary">← Kembali ke Daftar Anggota</button>
+          		<button onclick="window.location.href='{{ route('pendaftar') }}'" class="btn btn-primary">← Kembali ke Daftar Pendaftar</button>
             </div>
           </div>
         </div>

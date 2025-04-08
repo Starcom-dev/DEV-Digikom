@@ -1,6 +1,6 @@
-<?php echo $__env->make('components.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('components.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('components.navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('components.header', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('components.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('components.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <div class="main-panel">
     <div class="content-wrapper" style="background-color: #D1D1D1;">
@@ -28,12 +28,12 @@
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
                         <div class="form-group">
-                            <label for="bulan" class="text-white" style="font-weight: bold;">Bulan</label>
+                            <label for="bulan" class="text-white" style="font-weight: bold;">Tahun</label>
                             <input  type="text"
                             class="form-control"
-                            name="bulan"
-                            id="bulan"
-                            value="<?php echo e($iuran->bulan); ?>" 
+                            name="tahun"
+                            id="tahun"
+                            value="<?php echo e($iuran->tahun); ?>" 
                             onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';"
                             required>
                         </div>
@@ -71,4 +71,4 @@
         </div>
     </footer>
 </div>
-<?php echo $__env->make( 'components.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/digikom.xyz/laravel/resources/views/pages/iuran/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make( 'components.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/digikom.xyz/laravel/resources/views/pages/iuran/edit.blade.php ENDPATH**/ ?>
