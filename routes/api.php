@@ -100,5 +100,5 @@ Route::get('/privacy/show', function () {
     ], 200);
 });
 
-Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
 Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
+Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);

@@ -33,18 +33,3 @@ class CallbackQrisController extends Controller
         }
     }
 }
-
-// Contoh validasi sederhana
-// if ($request->has('status') && $request->status == 'PAID') {
-// Update transaksi kamu di database
-// Misalnya berdasarkan external_id atau invoice_id
-// Contoh:
-/*
-    $transaction = Transaction::where('external_id', $request->external_id)->first();
-    if ($transaction) {
-        $transaction->status = 'paid';
-        $transaction->save();
-    }
-    */
-// }
-// return response()->json(['message' => 'Callback received'], 200);

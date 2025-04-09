@@ -24,7 +24,7 @@ class CallbackEwalletController extends Controller
             }
             if ($request->has('status') && $request->status == 'PAID') {
             }
-            return response()->json(['data' => $request]);
+            return response()->noContent();
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Unauthorized',
