@@ -26,7 +26,8 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranVaController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranQrisController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
-use App\Http\Controllers\Api\CallbackPayment\CallbackController;
+use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
+use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 
 Route::post('/auth/logout', LogoutController::class)->middleware('jwt.auth')->name('logout');
 Route::post('/auth/login', LoginController::class)->name('login');
@@ -45,6 +46,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('/user', UserController::class);
     Route::get('/smart-card', [UserController::class, 'smartCard']);
     Route::post('/user/edit-profile', [UserController::class, 'update']);
+    Route::post('/user/edit-foto-profile', [UserController::class, 'updateFoto']);
     // ubah agar tidak menggunakan route post
     Route::apiResource('/usaha', UsahaController::class);
     Route::apiResource('/berita', BeritaController::class)
@@ -98,4 +100,5 @@ Route::get('/privacy/show', function () {
     ], 200);
 });
 
-Route::post('/callback', [CallbackController::class, 'handle']);
+Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
+Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);

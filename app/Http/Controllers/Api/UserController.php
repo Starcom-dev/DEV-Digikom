@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
 
 class UserController extends Controller
@@ -20,7 +21,7 @@ class UserController extends Controller
         try {
             // Ambil data user yang sedang login
             $getAuthToken = JWTAuth::parseToken()->authenticate();
-          	$getUser = User::with(['pekerjaan', 'pendidikan', 'agama', 'creator'])->find($getAuthToken->id);
+            $getUser = User::with(['pekerjaan', 'pendidikan', 'agama', 'creator'])->find($getAuthToken->id);
 
             // Return data user sebagai resource
             return new UserResource(true, 'Data Profile', $getUser);
@@ -37,7 +38,7 @@ class UserController extends Controller
         }
     }
 
-  	public function smartCard()
+    public function smartCard()
     {
         try {
             // Ambil data user yang sedang login
@@ -73,8 +74,8 @@ class UserController extends Controller
             'agama_id' => 'nullable|integer',
             'pendidikan_id' => 'nullable|integer',
         ]);
-      
-      	try {
+
+        try {
             // Ambil pengguna yang terautentikasi dari token
             $user = JWTAuth::parseToken()->authenticate();
 
@@ -100,9 +101,9 @@ class UserController extends Controller
             if ($request->hasFile('profile_picture')) {
                 //$data['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
                 $data['profile_picture'] = $this->resizeAndStoreImage($request->file('profile_picture'), 'profile_pictures');
-              	$oldImage = $user->profile_picture;
-              	if($oldImage){
-                	Storage::disk('public')->delete($oldImage);
+                $oldImage = $user->profile_picture;
+                if ($oldImage) {
+                    Storage::disk('public')->delete($oldImage);
                 }
             }
 
@@ -110,13 +111,13 @@ class UserController extends Controller
             if ($request->hasFile('ktp_pictures')) {
                 //$data['ktp_pictures'] = $request->file('ktp_pictures')->store('ktp_pictures', 'public');
                 $data['ktp_picture'] = $this->resizeAndStoreImage($request->file('ktp_pictures'), 'ktp_pictures');
-              	$oldImage = $user->ktp_picture;
-              	if($oldImage){
-                  Storage::disk('public')->delete($oldImage);
+                $oldImage = $user->ktp_picture;
+                if ($oldImage) {
+                    Storage::disk('public')->delete($oldImage);
                 }
             }
             // Update pengguna
-          	
+
             $user->update($data);
 
             // Kembalikan respons sukses
@@ -127,6 +128,48 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update user',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function updateFoto(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'profile_picture' => 'required|image|mimes:png,jpg,jpeg|max:10048'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'error' => $validator->errors()
+                ], 422);
+            }
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$request->hasFile('profile_picture')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'File not found'
+                ], 404);
+            } else {
+                $data['profile_picture'] = $this->resizeAndStoreImage($request->file('profile_picture'), 'profile_pictures');
+                $oldImage = $user->profile_picture;
+                if ($oldImage) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
+            $user->update($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile picture updated'
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error updating foto profoile:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update foto profile',
                 'error' => $e->getMessage(),
             ], 500);
         }

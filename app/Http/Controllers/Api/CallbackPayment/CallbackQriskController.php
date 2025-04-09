@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class CallbackController extends Controller
+class CallbackQrisController extends Controller
 {
     public function handle(Request $request)
     {
@@ -21,6 +21,8 @@ class CallbackController extends Controller
             }
             if ($token !== $callBackToken) {
                 return response()->json(['message' => 'Token callback invalid'], 401);
+            }
+            if ($request->has('status') && $request->status == 'PAID') {
             }
             return response()->json(['data' => $request]);
         } catch (\Throwable $th) {
