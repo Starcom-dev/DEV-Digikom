@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranVaController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranQrisController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\CallbackPayment\CallbackController;
 
 Route::post('/auth/logout', LogoutController::class)->middleware('jwt.auth')->name('logout');
 Route::post('/auth/login', LoginController::class)->name('login');
@@ -47,24 +48,24 @@ Route::middleware(['jwt.auth'])->group(function () {
     // ubah agar tidak menggunakan route post
     Route::apiResource('/usaha', UsahaController::class);
     Route::apiResource('/berita', BeritaController::class)
-    ->names([
-        'index' => 'berita.index',
-        'store' => 'berita.store',
-        'show' => 'berita.show',
-        'update' => 'berita.update',
-        'destroy' => 'berita.destroy',
-        'search' => 'berita.search',
-    ]);
+        ->names([
+            'index' => 'berita.index',
+            'store' => 'berita.store',
+            'show' => 'berita.show',
+            'update' => 'berita.update',
+            'destroy' => 'berita.destroy',
+            'search' => 'berita.search',
+        ]);
 
     Route::apiResource('/kegiatan', KegiatanController::class);
     Route::apiResource('/iuran', IuranController::class)
-    ->names([
-        'index' => 'iuran_custom.index',
-        'store' => 'iuran_custom.store',
-        'show' => 'iuran_custom.show',
-        'update' => 'iuran_custom.update',
-        'destroy' => 'iuran_custom.destroy',
-    ]);
+        ->names([
+            'index' => 'iuran_custom.index',
+            'store' => 'iuran_custom.store',
+            'show' => 'iuran_custom.show',
+            'update' => 'iuran_custom.update',
+            'destroy' => 'iuran_custom.destroy',
+        ]);
     Route::apiResource('/anggaran-dasar', AnggaranDasarController::class);
     Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class);
     Route::apiResource('/peraturan-organisasi', PeraturanOrganisasiController::class);
@@ -87,7 +88,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
     Route::get('/banner', [BannerController::class, 'index']);
-    
 });
 
 Route::get('/privacy/show', function () {
@@ -97,3 +97,5 @@ Route::get('/privacy/show', function () {
         'data' => false, // atau false, tergantung kondisi
     ], 200);
 });
+
+Route::post('/callback', [CallbackController::class, 'handle']);
