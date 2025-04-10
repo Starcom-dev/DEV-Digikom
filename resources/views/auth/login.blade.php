@@ -22,7 +22,7 @@
                             <div class="card-body text-center">
                                 <img src="{{ asset('assets/digikomLogo.png') }}" alt="logo"
                                     style="width: 100px; height: 100px;" />
-                                <h3 class="card-title  my-3">Login Tess</h3>
+                                <h3 class="card-title  my-3">Login</h3>
                             </div>
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
