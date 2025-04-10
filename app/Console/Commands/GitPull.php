@@ -20,6 +20,6 @@ class GitPull extends Command
         $output = shell_exec($command);
 
         Log::channel('single')->info('Git Pull Output: ' . $output);
-        $this->info(implode("\n", $output));
+        $this->info($output);
     }
 }
