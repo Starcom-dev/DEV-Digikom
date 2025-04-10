@@ -11,7 +11,7 @@ class CallbackEwalletController extends Controller
     public function handle(Request $request)
     {
         // Simpan log callback untuk debug awal
-        Log::info('Xendit Callback:', $request->all());
+        Log::channel('single')->info('Xendit Callback:', $request->all());
 
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');
