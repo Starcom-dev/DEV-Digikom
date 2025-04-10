@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PrivacyController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/link-storage', function () {
     Artisan::call('storage:link');
@@ -28,14 +29,14 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/anggota/toggle-suspend/{id}', [UserController::class, 'toggleSuspend'])->name('anggota.toggleSuspend');
 
     Route::resource('/anggota', \App\Http\Controllers\UserController::class);
-  	Route::get('/pendaftar', [RegisterController::class, 'index'])->name('pendaftar');
+    Route::get('/pendaftar', [RegisterController::class, 'index'])->name('pendaftar');
     Route::get('/pendaftar/{user}', [RegisterController::class, 'show'])->name('pendaftar.show');
-  	Route::put('/pendaftar/update/{id}/{status}', [RegisterController::class, 'update'])->name('update_pendaftar');
-  
+    Route::put('/pendaftar/update/{id}/{status}', [RegisterController::class, 'update'])->name('update_pendaftar');
+
     Route::resource('/pengurus', \App\Http\Controllers\PengurusController::class);
     Route::resource('/usaha', \App\Http\Controllers\UsahaController::class);
     Route::get('/iuran/{id}/enroll', [IuranController::class, 'enrollTagihan'])->name('iuran.enroll');
-    
+
     Route::resource('/banner', \App\Http\Controllers\BannerController::class);
 });
 
@@ -59,3 +60,7 @@ Route::get('/test-log', function () {
 Route::get('/privacy', [PrivacyController::class, 'privacy'])->name('privacy');
 Route::get('/privacy/remove', [PrivacyController::class, 'remove'])->name('privacy.remove');
 
+Route::post('/git-webhook', function () {
+    Artisan::call('git:pull');
+    return response()->json(['status' => 'success']);
+});
