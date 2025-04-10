@@ -107,7 +107,7 @@ Route::post('/git-webhook', function () {
     Log::channel('single')->info('Test Log: Verifiy git webhook.');
     try {
         $output = Artisan::call('git:pull');
-        Log::channel('single')->info('Git pull output: ' . Artisan::output());
+        Log::channel('single')->info('Git pull output:', ['output' => Artisan::output()]);
     } catch (\Exception $e) {
         Log::error('Git pull error: ' . $e->getMessage());
     }
