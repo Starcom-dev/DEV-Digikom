@@ -19,7 +19,7 @@ class GitPull extends Command
         $command = 'export HOME=/home/digik3882 && cd /home/digikom.xyz/dev && git pull origin main 2>&1';
         $output = shell_exec($command);
 
-        Log::info('Git Pull Output:', $output);
+        Log::channel('single')->info('Git Pull Output: ' . $output);
         $this->info(implode("\n", $output));
     }
 }
