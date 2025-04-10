@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\CallbackPayment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CallbackEwalletController extends Controller
@@ -22,9 +23,18 @@ class CallbackEwalletController extends Controller
             if ($token !== $callBackToken) {
                 return response()->json(['message' => 'Token callback invalid'], 401);
             }
-            if ($request->has('status') && $request->status == 'PAID') {
+            $payload = json_decode(json_encode($request->all()));
+            $status = $payload->data->status ?? null;
+            $referenceId = $payload->data->reference_id ?? null;
+            if ($status === 'SUCCEEDED') {
+                $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
+                if ($transaction) {
+                    DB::table('transactions')->where(['id_transaction' => $transaction->id_transaction, 'tagihan_id' => $transaction->tagihan_id])->update(['status_transaction' => 'success']);
+                } else {
+                    Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
+                }
             }
-            return response()->noContent();
+            return response('', 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Unauthorized',
