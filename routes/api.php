@@ -29,19 +29,18 @@ use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
+
 
 Route::post('/auth/logout', LogoutController::class)->middleware('jwt.auth')->name('logout');
 Route::post('/auth/login', LoginController::class)->name('login');
 Route::post('/auth/register', [RegisterController::class, 'register']);
 Route::delete('/auth/user/{id}', [RegisterController::class, 'destroy']);
 
-use Illuminate\Support\Facades\Log;
-
 Route::get('/test-log', function () {
     Log::channel('single')->info('Test Log: Verifying single channel logging.');
     return response()->json(['message' => 'Log written!']);
 });
-
 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('/user', UserController::class);
@@ -105,6 +104,13 @@ Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
 Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
 
 Route::post('/git-webhook', function () {
-    Artisan::call('git:pull');
+    Log::channel('single')->info('Test Log: Verifiy git webhook.');
+    try {
+        $output = Artisan::call('git:pull');
+        Log::channel('single')->info('Git pull output: ' . Artisan::output());
+    } catch (\Exception $e) {
+        Log::error('Git pull error: ' . $e->getMessage());
+    }
+
     return response()->json(['status' => 'success']);
 });
