@@ -59,3 +59,6 @@ Route::get('/test-log', function () {
 
 Route::get('/privacy', [PrivacyController::class, 'privacy'])->name('privacy');
 Route::get('/privacy/remove', [PrivacyController::class, 'remove'])->name('privacy.remove');
+Route::get('/whoami', function () {
+    return exec('whoami');
+});
