@@ -105,7 +105,6 @@ Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
 
 Route::post('/git-webhook', function () {
     Log::channel('single')->info('Test Log: Verifiy git webhook.');
-    Log::info('Laravel running as user: ' . get_current_user());
     try {
         $output = Artisan::call('git:pull');
         Log::channel('single')->info('Git pull output:', ['output' => Artisan::output()]);
