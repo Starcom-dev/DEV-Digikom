@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::post('/auth/logout', LogoutController::class)->middleware('jwt.auth')->name('logout');
 Route::post('/auth/login', LoginController::class)->name('login');
