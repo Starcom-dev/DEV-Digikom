@@ -59,8 +59,3 @@ Route::get('/test-log', function () {
 
 Route::get('/privacy', [PrivacyController::class, 'privacy'])->name('privacy');
 Route::get('/privacy/remove', [PrivacyController::class, 'remove'])->name('privacy.remove');
-
-Route::post('/git-webhook', function () {
-    Artisan::call('git:pull');
-    return response()->json(['status' => 'success']);
-});

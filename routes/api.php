@@ -102,3 +102,8 @@ Route::get('/privacy/show', function () {
 
 Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
 Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
+
+Route::post('/git-webhook', function () {
+    Artisan::call('git:pull');
+    return response()->json(['status' => 'success']);
+});
