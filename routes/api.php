@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
+use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
@@ -48,8 +49,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/user/edit-profile', [UserController::class, 'update']);
     Route::post('/user/edit-foto-profile', [UserController::class, 'updateFoto']);
     // ubah agar tidak menggunakan route post
-    Route::apiResource('/usaha', UsahaController::class);
+    Route::apiResource('/usaha', UsahaController::class)->middleware(CheckMembership::class);
     Route::apiResource('/berita', BeritaController::class)
+        ->middleware(CheckMembership::class)
         ->names([
             'index' => 'berita.index',
             'store' => 'berita.store',
@@ -59,7 +61,7 @@ Route::middleware(['jwt.auth'])->group(function () {
             'search' => 'berita.search',
         ]);
 
-    Route::apiResource('/kegiatan', KegiatanController::class);
+    Route::apiResource('/kegiatan', KegiatanController::class)->middleware(CheckMembership::class);
     Route::apiResource('/iuran', IuranController::class)
         ->names([
             'index' => 'iuran_custom.index',
@@ -89,7 +91,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('transactions', [TransactionController::class, 'index']);
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
-    Route::get('/banner', [BannerController::class, 'index']);
+    Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
 });
 
 Route::get('/privacy/show', function () {
@@ -100,9 +102,11 @@ Route::get('/privacy/show', function () {
     ], 200);
 });
 
+// callback payment
 Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
 Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
 
+// github webhook
 Route::post('/git-webhook', function () {
     Log::channel('single')->info('Test Log: Verifiy git webhook.');
     try {
@@ -111,6 +115,5 @@ Route::post('/git-webhook', function () {
     } catch (\Exception $e) {
         Log::error('Git pull error: ' . $e->getMessage());
     }
-
     return response()->json(['status' => 'success']);
 });
