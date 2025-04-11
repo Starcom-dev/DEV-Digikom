@@ -17,7 +17,7 @@ class PembayaranEwalletController extends Controller
             // Validasi input
             $validated = $request->validate([
                 'iuran_id' => 'required|integer',
-                'nominal' => 'required|numeric|min:1',
+                // 'nominal' => 'required|numeric|min:1',
                 'metode_pembayaran' => 'required|string|in:ID_OVO,ID_DANA,ID_LINKAJA,ID_SHOPEEPAY,ID_GOPAY,ID_QRIS',
                 'no_hp' => 'nullable|string',
                 // 'keterangan' => 'nullable|string|max:255',
@@ -32,7 +32,10 @@ class PembayaranEwalletController extends Controller
 
             // Buat ID Transaksi unik
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
-            $nominal = $validated['nominal'];
+            // $nominal = $validated['nominal'];
+
+            // get nominal iuran
+            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
 
             // Konfigurasi payload
             $payload = [
@@ -90,43 +93,53 @@ class PembayaranEwalletController extends Controller
             $kode_bayar = $this->getKodeBayar($validated['metode_pembayaran'], $json, $validated['no_hp']);
 
             // Simpan transaksi ke database
-            DB::table('tagihans')
-                ->where('iuran_id', $validated['iuran_id'])
-                ->update([
-                    'user_id' => $user->id,
-                    'status' => 'Belum Lunas',
-                    'tanggal_bayar' => now(),
-                    'nominal' => $validated['nominal'] + $adminFee,
-                    'metode_pembayaran' => $validated['metode_pembayaran'],
-                    'payment_status' => $json['status'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            // DB::table('tagihans')
+            //     ->where('iuran_id', $validated['iuran_id'])
+            //     ->update([
+            //         'user_id' => $user->id,
+            //         'status' => 'Belum Lunas',
+            //         'tanggal_bayar' => now(),
+            //         'nominal' => $validated['nominal'] + $adminFee,
+            //         'metode_pembayaran' => $validated['metode_pembayaran'],
+            //         'payment_status' => $json['status'],
+            //         'created_at' => now(),
+            //         'updated_at' => now(),
+            //     ]);
+            // $tagihan = DB::table('tagihans')->where('iuran_id', $validated['iuran_id'])->first();
+            // if (!$tagihan) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Tagihan tidak ditemukan'
+            //     ]);
+            // }
+            $tagihan_id = DB::table('tagihans')->insertGetId([
+                'user_id' => $user->id,
+                'iuran_id' => $validated['iuran_id'],
+                'status' => 'Belum Lunas',
+                'nominal' => $nominal + $adminFee,
+                'metode_pembayaran' => $validated['metode_pembayaran'],
+                'payment_status' => $json['status'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-            $tagihan = DB::table('tagihans')->where('iuran_id', $validated['iuran_id'])->first();
-            if (!$tagihan) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tagihan tidak ditemukan'
-                ]);
-            }
             $recentTransaction_id = DB::table('transactions')->insertGetId([
                 'status_transaction' => 'pending',
                 'id_transaction' => $id_transaksi,  // You may want to change this if it's generated elsewhere
                 'created_at' => now(),
                 'user_id' => $user->id,
                 // 'tagihan_id' => $validated['iuran_id'],
-                'tagihan_id' => $tagihan->id,
-                'nominal' => $validated['nominal'] + $adminFee,
+                'tagihan_id' => $tagihan_id,
+                'nominal' => $nominal + $adminFee,
             ]);
             Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Transaksi berhasil diproses.',
-                'nominal' => $validated['nominal'],
+                'nominal' => $nominal,
                 'admin' => $adminFee,
-                'total' => $validated['nominal'] + $adminFee,
+                'total' => $nominal + $adminFee,
                 'transaction_id' => $recentTransaction_id,
                 'data' => [
                     'id' => $json['id'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\CallbackPayment;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +18,7 @@ class CallbackEwalletController extends Controller
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');
         try {
+            DB::beginTransaction();
             if (!$token) {
                 return response()->json(['message' => 'Token callback not found'], 404);
             }
@@ -30,14 +32,44 @@ class CallbackEwalletController extends Controller
                 Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
-                    DB::table('transactions')->where(['id_transaction' => $transaction->id_transaction, 'tagihan_id' => $transaction->tagihan_id])->update(['status_transaction' => 'success']);
-                    DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->update(['status' => 'Lunas', 'payment_status' => 'SUCCEEDED']);
+                    // update status transasction pada table transactions
+                    DB::table('transactions')->where([
+                        'id_transaction' => $transaction->id_transaction,
+                        'tagihan_id' => $transaction->tagihan_id
+                    ])->update(['status_transaction' => 'success']);
+                    // get data tagihan
+                    $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
+                    // update status, tgl bayar dan payment_status pada table tagihans
+                    DB::table('tagihans')->where([
+                        'id' => $transaction->tagihan_id
+                    ])->update([
+                        'status' => 'Lunas',
+                        'payment_status' => 'SUCCEEDED',
+                        'updated_at' => now()
+                    ]);
+                    // get detail iuran membership
+                    $iuran = DB::table('iurans')->where([
+                        'id' => $tagihan->iuran_id,
+                    ])->first();
+                    // update status membership user
+                    $typeMembership = $iuran->masa_aktif;
+                    $membershipStart = Carbon::now();
+                    $membershipEnd = Carbon::now()->addMonths($typeMembership);
+                    DB::table('users')->where([
+                        'id' => $transaction->user_id
+                    ])->update([
+                        'is_membership' => 'true',
+                        'membership_start' => $membershipStart,
+                        'membership_end' => $membershipEnd
+                    ]);
                 } else {
                     Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
                 }
             }
+            DB::commit();
             return response('', 200);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Unauthorized',
                 'error' => $th
