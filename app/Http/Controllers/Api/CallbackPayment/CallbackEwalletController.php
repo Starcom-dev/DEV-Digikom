@@ -43,6 +43,7 @@ class CallbackEwalletController extends Controller
                     DB::table('tagihans')->where([
                         'id' => $transaction->tagihan_id
                     ])->update([
+                        'tanggal_bayar' => now(),
                         'status' => 'Lunas',
                         'payment_status' => 'SUCCEEDED',
                         'updated_at' => now()
