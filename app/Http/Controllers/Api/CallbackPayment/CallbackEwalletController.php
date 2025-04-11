@@ -27,6 +27,7 @@ class CallbackEwalletController extends Controller
             $status = $payload->data->status ?? null;
             $referenceId = $payload->data->reference_id ?? null;
             if ($status === 'SUCCEEDED') {
+                Log::info('Status Payment Dari Xendit', $status);
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
                     DB::table('transactions')->where(['id_transaction' => $transaction->id_transaction, 'tagihan_id' => $transaction->tagihan_id])->update(['status_transaction' => 'success']);
