@@ -31,7 +31,7 @@ class CallbackEwalletController extends Controller
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
                     DB::table('transactions')->where(['id_transaction' => $transaction->id_transaction, 'tagihan_id' => $transaction->tagihan_id])->update(['status_transaction' => 'success']);
-                    DB::table('tagihans')->where(['id' => $transaction])->update(['status' => 'Lunas', 'payment_status' => 'SUCCEEDED']);
+                    DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->update(['status' => 'Lunas', 'payment_status' => 'SUCCEEDED']);
                 } else {
                     Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
                 }
