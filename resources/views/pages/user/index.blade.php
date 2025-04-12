@@ -77,7 +77,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if ($item->is_membership == 1)
+                                                @if ($item->is_membership == true)
                                                     <span class="badge bg-success">True</span>
                                                 @else
                                                     <span class="badge bg-danger">False</span>
