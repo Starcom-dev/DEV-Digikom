@@ -42,15 +42,14 @@ class IuranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tahun' => 'required|unique:iurans,tahun',
-            'jumlah' => 'required',
-            'keterangan' => 'required',
+            'masa_aktif' => 'required|numeric',
+            'jumlah' => 'required|numeric',
         ]);
 
         $iuran = new Iuran;
-        $iuran->tahun = $request->tahun;
+        $iuran->masa_aktif = $request->masa_aktif;
         $iuran->jumlah = $request->jumlah;
-        $iuran->keterangan = $request->keterangan;
+        $iuran->keterangan = $request->masa_aktif . ' Bulan';
         $iuran->created_by = Auth::guard('admin')->user()->id;
         $iuran->save();
 
@@ -66,15 +65,14 @@ class IuranController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'tahun' => 'required|max:255',
-            'jumlah' => 'required',
-            'keterangan' => 'required',
+            'masa_aktif' => 'required|numeric',
+            'jumlah' => 'required|numeric',
         ]);
 
         $iuran = Iuran::findOrFail($id);
-        $iuran->tahun = $request->tahun;
+        $iuran->masa_aktif = $request->masa_aktif;
         $iuran->jumlah = $request->jumlah;
-        $iuran->keterangan = $request->keterangan;
+        $iuran->keterangan = $request->masa_aktif . ' Bulan';
         $iuran->created_by = Auth::guard('admin')->user()->id;
         $iuran->save();
 

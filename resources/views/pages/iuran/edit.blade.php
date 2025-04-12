@@ -28,47 +28,30 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="bulan" class="text-white" style="font-weight: bold;">Tahun</label>
-                            <input  type="text"
-                            class="form-control"
-                            name="tahun"
-                            id="tahun"
-                            value="{{ $iuran->tahun }}" 
-                            onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';"
-                            required>
+                            <label for="masa_aktif" class="text-white" style="font-weight: bold;">Masa Aktif</label>
+                            <input type="text" class="form-control" name="masa_aktif" id="masa_aktif"
+                                value="{{ $iuran->masa_aktif }}"
+                                onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';" required>
                         </div>
 
                         <div class="form-group">
                             <label for="jumlah" class="text-white" style="font-weight: bold;">Jumlah</label>
-                            <input  type="text" 
-                            class="form-control" 
-                            name="jumlah" 
-                            id="jumlah" 
-                            value="{{ $iuran->jumlah }}" 
-                            onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';"
-                            required>
+                            <input type="text" class="form-control" name="jumlah" id="jumlah"
+                                value="{{ $iuran->jumlah }}"
+                                onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';" required>
                         </div>
-
-                        <div class="form-group">
-                            <label for="keterangan" class="text-white" style="font-weight: bold;">Keterangan</label>
-                            <textarea class="form-control" name="keterangan" id="keterangan" rows="5" 
-                            value="{{ $iuran->nama_iuran }}" 
-                            onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';"
-                            required>{{ $iuran->keterangan }}</textarea>
-                        </div>
-
                         <button type="submit" class="btn btn-primary">Update iuran</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-     <!-- Footer -->
-     <footer class="footer" style="background-color: #2A2A2A; padding: 10px 0;">
+    <!-- Footer -->
+    <footer class="footer" style="background-color: #2A2A2A; padding: 10px 0;">
         <div class="container text-center">
             <span class="text-muted d-block text-white">Copyright © digikom.com {{ date('Y') }}</span>
             <span class="text-muted d-block text-white">All Rights Reserved</span>
         </div>
     </footer>
 </div>
-@include( 'components.footer')
+@include('components.footer')

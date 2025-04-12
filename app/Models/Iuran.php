@@ -14,7 +14,7 @@ class Iuran extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun', 'jumlah', 'keterangan', 'tempo', 'created_by'];
+    protected $fillable = ['jumlah', 'keterangan', 'tempo', 'created_by', 'masa_aktif'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
         'tempo' => 'datetime',
@@ -32,4 +32,3 @@ class Iuran extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
-

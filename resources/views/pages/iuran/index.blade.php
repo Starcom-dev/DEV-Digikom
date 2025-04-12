@@ -8,10 +8,15 @@
     <div class="content-wrapper" style="background-color: #D1D1D1;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="card-title text-black">Tagihan:</h3>
-            <a href="{{ route('iuran.create') }}" class="btn btn-primary">Create New Tagihan</a>
+            <a href="{{ route('iuran.create') }}" class="btn btn-primary">Buat Iuran Baru</a>
         </div>
         <div class="col grid-margin stretch-card">
             <div class="card" style="background-color: #2A2A2A;">
+                @session('success')
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endsession
                 <div class="card-body">
                     <div class="mb-4">
                         <div class="mb-4 d-flex justify-content-between align-items-center">
@@ -56,7 +61,7 @@
                                 {{ request('order') === 'asc' ? 'asc' : 'desc' }}"></span>
                                         </a>
                                     </th>
-                                    <th style="color: black;">Keterangan</th>
+                                    <th style="color: black;">Masa Aktif</th>
                                     <th style="color: black;">Actions</th>
                                 </tr>
                             </thead>
@@ -67,7 +72,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         {{-- <td>{{ $item->tahun }}</td> --}}
                                         <td>{{ 'Rp ' . number_format($item->jumlah, 0, ',', '.') }}</td>
-                                        <td>{{ $item->keterangan }}</td>
+                                        <td>{{ $item->masa_aktif }}</td>
                                         <td>
                                             <a href="{{ route('iuran.edit', $item->id) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>
