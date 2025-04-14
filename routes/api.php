@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
+use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -70,8 +71,8 @@ Route::middleware(['jwt.auth'])->group(function () {
             'update' => 'iuran_custom.update',
             'destroy' => 'iuran_custom.destroy',
         ]);
-    Route::apiResource('/anggaran-dasar', AnggaranDasarController::class);
-    Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class);
+    Route::apiResource('/anggaran-dasar', AnggaranDasarController::class)->middleware(CheckMembership::class);
+    Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class)->middleware(CheckMembership::class);
     Route::apiResource('/peraturan-organisasi', PeraturanOrganisasiController::class);
     Route::apiResource('/pengurus', PengurusController::class);
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
@@ -92,6 +93,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
+
+    // finpay payment
+    Route::post('/finpay', [FinpayController::class, 'bayar']);
 });
 
 Route::get('/privacy/show', function () {
