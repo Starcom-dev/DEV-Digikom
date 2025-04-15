@@ -67,6 +67,7 @@ class CallbackQrisController extends Controller
             }
             return response()->noContent();
         } catch (\Throwable $th) {
+            Log::channel('single')->error('Xendit Error Callback VA ' . $th);
             return response()->json([
                 'message' => 'Unauthorized',
                 'error' => $th
