@@ -35,10 +35,15 @@ return [
         ],
     ],
     'xendit' => [
-    // 'api_key' => env('XENDIT_API_KEY'),
-    'api_key' => env('eG5kX2RldmVsb3BtZW50XzVVWkNWUjJwbU1vOXpqbkZLV2pER2FValNXRFdYeExVVUt0QmNJWVhsaVV5OWJxWHBvdmx1SzNHdTBpWFFDOg=='),
-    'user_id' => env('XENDIT_USER_ID'),
-    // 'user_id' => env('65694e8b303521a8abfbd7db'),
-],
+        // 'api_key' => env('XENDIT_API_KEY'),
+        'api_key' => env('eG5kX2RldmVsb3BtZW50XzVVWkNWUjJwbU1vOXpqbkZLV2pER2FValNXRFdYeExVVUt0QmNJWVhsaVV5OWJxWHBvdmx1SzNHdTBpWFFDOg=='),
+        'user_id' => env('XENDIT_USER_ID'),
+        // 'user_id' => env('65694e8b303521a8abfbd7db'),
+    ],
+    'finpay' => [
+        'merchant_id' => 'APS023',
+        'merchant_key' => '3cQiXGKRzwl49JAU5voMH20ubxPfWdSB',
+        'url_sandbox' => 'https://devo.finnet.co.id/pg/payment/card/initiate'
+    ]
 
 ];

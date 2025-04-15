@@ -63,7 +63,9 @@ class CallbackEwalletController extends Controller
                         'membership_start' => $membershipStart,
                         'membership_end' => $membershipEnd
                     ]);
+                    DB::commit();
                 } else {
+                    DB::rollBack();
                     Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
                 }
             }
