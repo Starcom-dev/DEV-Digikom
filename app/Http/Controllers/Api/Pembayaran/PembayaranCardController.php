@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Pembayaran;
 
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class PembayaranCardController extends Controller
         try {
             // Validasi input
             $validated = $request->validate([
-                'nominal' => 'required|numeric|min:1',
+                // 'nominal' => 'required|numeric|min:1',
                 'token' => 'required|string',
                 'auth' => 'required|string',
                 'cvn' => 'required|string',
@@ -29,7 +30,10 @@ class PembayaranCardController extends Controller
 
             // Buat ID Transaksi unik
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
-            $nominal = $validated['nominal'];
+            // $nominal = $validated['nominal'];
+            // get nominal iuran
+            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
+
             $token = $validated['token'];
             $auth = $validated['auth'];
             $cvn = $validated['cvn'];
@@ -53,7 +57,7 @@ class PembayaranCardController extends Controller
                 ->withBasicAuth(config('services.xendit.api_key'), '')
                 ->withHeaders([  // Menambahkan headers kustom
                     'Authorization' => 'Basic ' . base64_encode(config('services.xendit.api_key') . ':'),
-                    'for-user-id' => '65694e8b303521a8abfbd7db',  // Gunakan ID pengguna terautentikasi
+                    'for-user-id' => config('services.xendit.user_id'),  // Gunakan ID pengguna terautentikasi
                     'Content-Type' => 'application/json',
                 ])
                 ->post('https://api.xendit.co/credit_card_charges', $payload);
@@ -83,7 +87,7 @@ class PembayaranCardController extends Controller
             Log::channel('single')->info('Transaksi berhasil diproses', $json);
 
             // Simpan transaksi ke database
-            DB::table('tagihan')->insert([
+            $tagihan_id = DB::table('tagihans')->insertGetId([
                 'user_id' => $user->id,
                 'iuran_id' => $validated['iuran_id'],
                 'status' => 'Belum Lunas',
@@ -93,6 +97,16 @@ class PembayaranCardController extends Controller
                 'keterangan' => $validated['keterangan'],
                 'created_at' => now(),
                 'updated_at' => now(),
+                'status' => $json['status']
+            ]);
+
+            DB::table('transactions')->insert([
+                'status_transaction' => 'pending',
+                'id_transaction' => $id_transaksi,
+                'created_at' => now(),
+                'user_id' => $user->id,
+                'tagihan_id' => $tagihan_id,
+                'nominal' => $nominal
             ]);
 
             Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
