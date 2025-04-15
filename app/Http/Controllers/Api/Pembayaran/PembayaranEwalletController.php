@@ -123,7 +123,7 @@ class PembayaranEwalletController extends Controller
                 'updated_at' => now(),
             ]);
 
-            $recentTransaction_id = DB::table('transactions')->insertGetId([
+            DB::table('transactions')->insert([
                 'status_transaction' => 'pending',
                 'id_transaction' => $id_transaksi,  // You may want to change this if it's generated elsewhere
                 'created_at' => now(),
@@ -140,7 +140,7 @@ class PembayaranEwalletController extends Controller
                 'nominal' => $nominal,
                 'admin' => $adminFee,
                 'total' => $nominal + $adminFee,
-                'transaction_id' => $recentTransaction_id,
+                'transaction_id' => $id_transaksi,
                 'data' => [
                     'id' => $json['id'],
                     'status' => $json['status'],
