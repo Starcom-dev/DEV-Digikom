@@ -72,6 +72,7 @@ class CallbackVaController extends Controller
             DB::commit();
             return response('', 200);
         } catch (\Throwable $th) {
+            Log::channel('single')->error('Xendit Error Callback Va ' . $th);
             DB::rollBack();
             return response()->json([
                 'message' => 'Unauthorized',
