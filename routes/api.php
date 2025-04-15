@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
+use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
@@ -109,6 +110,7 @@ Route::get('/privacy/show', function () {
 // callback payment
 Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
 Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
+Route::post('/callbackVa', [CallbackVaController::class, 'handle']);
 
 // github webhook
 Route::post('/git-webhook', function () {
