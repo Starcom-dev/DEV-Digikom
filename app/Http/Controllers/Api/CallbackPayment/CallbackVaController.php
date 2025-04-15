@@ -26,49 +26,87 @@ class CallbackVaController extends Controller
                 return response()->json(['message' => 'Token callback invalid'], 401);
             }
             $payload = json_decode(json_encode($request->all()));
-            $status = $payload->data->status ?? null;
-            $referenceId = $payload->data->reference_id ?? null;
-            if ($status === 'SUCCEEDED') {
-                Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
-                $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
-                if ($transaction) {
-                    // update status transasction pada table transactions
-                    DB::table('transactions')->where([
-                        'id_transaction' => $transaction->id_transaction,
-                        'tagihan_id' => $transaction->tagihan_id
-                    ])->update(['status_transaction' => 'success']);
-                    // get data tagihan
-                    $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
-                    // update status, tgl bayar dan payment_status pada table tagihans
-                    DB::table('tagihans')->where([
-                        'id' => $transaction->tagihan_id
-                    ])->update([
-                        'tanggal_bayar' => now(),
-                        'status' => 'Lunas',
-                        'payment_status' => 'SUCCEEDED',
-                        'updated_at' => now()
-                    ]);
-                    // get detail iuran membership
-                    $iuran = DB::table('iurans')->where([
-                        'id' => $tagihan->iuran_id,
-                    ])->first();
-                    // update status membership user
-                    $typeMembership = $iuran->masa_aktif;
-                    $membershipStart = Carbon::now();
-                    $membershipEnd = Carbon::now()->addMonths($typeMembership);
-                    DB::table('users')->where([
-                        'id' => $transaction->user_id
-                    ])->update([
-                        'is_membership' => 'true',
-                        'membership_start' => $membershipStart,
-                        'membership_end' => $membershipEnd
-                    ]);
-                    DB::commit();
-                } else {
-                    DB::rollBack();
-                    Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
-                }
+            // $status = $payload->data->status ?? null;
+            $external_id = $payload->data->external_id ?? null;
+            $transaction = DB::table('transactions')->where('id_transaction', $external_id)->first();
+            if ($transaction) {
+                // update status transasction pada table transactions
+                DB::table('transactions')->where([
+                    'id_transaction' => $transaction->id_transaction,
+                    'tagihan_id' => $transaction->tagihan_id
+                ])->update(['status_transaction' => 'success']);
+                // get data tagihan
+                $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
+                // update status, tgl bayar dan payment_status pada table tagihans
+                DB::table('tagihans')->where([
+                    'id' => $transaction->tagihan_id
+                ])->update([
+                    'tanggal_bayar' => now(),
+                    'status' => 'Lunas',
+                    'payment_status' => 'SUCCEEDED',
+                    'updated_at' => now()
+                ]);
+                // get detail iuran membership
+                $iuran = DB::table('iurans')->where([
+                    'id' => $tagihan->iuran_id,
+                ])->first();
+                // update status membership user
+                $typeMembership = $iuran->masa_aktif;
+                $membershipStart = Carbon::now();
+                $membershipEnd = Carbon::now()->addMonths($typeMembership);
+                DB::table('users')->where([
+                    'id' => $transaction->user_id
+                ])->update([
+                    'is_membership' => 'true',
+                    'membership_start' => $membershipStart,
+                    'membership_end' => $membershipEnd
+                ]);
+                DB::commit();
+            } else {
+                DB::rollBack();
+                Log::warning("Transaksi dengan ID $external_id tidak ditemukan.");
             }
+            // if ($status === 'SUCCEEDED') {
+            //     Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
+            //     $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
+            //     if ($transaction) {
+            //         // update status transasction pada table transactions
+            //         DB::table('transactions')->where([
+            //             'id_transaction' => $transaction->id_transaction,
+            //             'tagihan_id' => $transaction->tagihan_id
+            //         ])->update(['status_transaction' => 'success']);
+            //         // get data tagihan
+            //         $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
+            //         // update status, tgl bayar dan payment_status pada table tagihans
+            //         DB::table('tagihans')->where([
+            //             'id' => $transaction->tagihan_id
+            //         ])->update([
+            //             'tanggal_bayar' => now(),
+            //             'status' => 'Lunas',
+            //             'payment_status' => 'SUCCEEDED',
+            //             'updated_at' => now()
+            //         ]);
+            //         // get detail iuran membership
+            //         $iuran = DB::table('iurans')->where([
+            //             'id' => $tagihan->iuran_id,
+            //         ])->first();
+            //         // update status membership user
+            //         $typeMembership = $iuran->masa_aktif;
+            //         $membershipStart = Carbon::now();
+            //         $membershipEnd = Carbon::now()->addMonths($typeMembership);
+            //         DB::table('users')->where([
+            //             'id' => $transaction->user_id
+            //         ])->update([
+            //             'is_membership' => 'true',
+            //             'membership_start' => $membershipStart,
+            //             'membership_end' => $membershipEnd
+            //         ]);
+            //         DB::commit();
+            //     } else {
+            //         DB::rollBack();
+            //         Log::warning("Transaksi dengan ID $referenceId tidak ditemukan.");
+            //     }
+            // }
             DB::commit();
             return response('', 200);
         } catch (\Throwable $th) {
