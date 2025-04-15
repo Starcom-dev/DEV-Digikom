@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Pembayaran;
 
 use Illuminate\Http\Request;
@@ -16,20 +17,24 @@ class PembayaranQrisController extends Controller
             // Validasi input
             $validated = $request->validate([
                 'iuran_id' => 'required|integer',
-                'nominal' => 'required|numeric|min:1',
+                // 'nominal' => 'required|numeric|min:1',
                 'metode_pembayaran' => 'required|string|in:ID_QRIS',
                 'keterangan' => 'nullable|string|max:255',
             ]);
-    
+
             // Ambil user dari token JWT
             $user = JWTAuth::parseToken()->authenticate();
-    
+
             // Buat ID Transaksi unik
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
-            $nominal = $validated['nominal'];
-    
+            // $nominal = $validated['nominal'];
+
+            // get nominal iuran
+            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
+
             // Konfigurasi payload untuk QRIS
             $payload = [
+                "id" => now(),
                 "reference_id" => $id_transaksi,
                 "currency" => "IDR",
                 "amount" => $nominal,
@@ -39,25 +44,27 @@ class PembayaranQrisController extends Controller
                     'success_redirect_url' => config('app.url'),
                 ],
             ];
-    
+
             Log::channel('single')->debug('Payload untuk API Xendit QRIS', $payload);
-    
+
             // Kirim permintaan ke API Xendit menggunakan Http:: (Laravel)
+            $apiKey = config('services.xendit.api_key');
+            $authHeader = 'Basic ' . base64_encode($apiKey . ':');
             $response = Http::timeout(30)  // Timeout 30 detik
-                ->withBasicAuth(config('services.xendit.api_key'), '')
                 ->withHeaders([  // Menambahkan headers kustom
-                    'Authorization' => 'Basic ' . base64_encode(config('services.xendit.api_key') . ':'),
-                    'for-user-id' => '65694e8b303521a8abfbd7db',  // Gunakan ID pengguna terautentikasi
+                    'Authorization' => $authHeader,
+                    'for-user-id' => config('services.xendit.user_id'),  // Gunakan ID pengguna terautentikasi
                     'Content-Type' => 'application/json',
                 ])
-                ->post('https://api.xendit.co/qr/charges', $payload);
-    
+                ->post('https://api.xendit.co/qr_codes', $payload);
+            // ->post('https://api.xendit.co/qr/charges', $payload);
+
             // Log status dan respons
             Log::channel('single')->info('Status respons dari API Xendit', [
                 'status_code' => $response->status(),
                 'response_body' => $response->body(),
             ]);
-    
+
             // Cek jika request gagal
             if ($response->failed()) {
                 Log::channel('single')->error('Gagal memproses pembayaran', [
@@ -71,29 +78,29 @@ class PembayaranQrisController extends Controller
                     'details' => $response->json(),
                 ], 400);
             }
-    
+
             // Ambil respons JSON dari Xendit
             $json = $response->json();
             Log::channel('single')->info('Transaksi berhasil diproses', $json);
-    
+
             // Ambil informasi kode bayar (QRIS)
             $kode_bayar = $json['actions']['qr_checkout_string'] ?? null;
-    
+
             // Simpan transaksi ke database
-            DB::table('tagihan')->insert([
-                'user_id' => $user->id,
-                'iuran_id' => $validated['iuran_id'],
-                'status' => 'Belum Lunas',
-                'tanggal_bayar' => null,
-                'nominal' => $nominal,
-                'metode_pembayaran' => $validated['metode_pembayaran'],
-                'keterangan' => $validated['keterangan'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-    
-            Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
-    
+            // DB::table('tagihan')->insert([
+            //     'user_id' => $user->id,
+            //     'iuran_id' => $validated['iuran_id'],
+            //     'status' => 'Belum Lunas',
+            //     'tanggal_bayar' => null,
+            //     'nominal' => $nominal,
+            //     'metode_pembayaran' => $validated['metode_pembayaran'],
+            //     'keterangan' => $validated['keterangan'],
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ]);
+
+            // Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Transaksi berhasil diproses.',

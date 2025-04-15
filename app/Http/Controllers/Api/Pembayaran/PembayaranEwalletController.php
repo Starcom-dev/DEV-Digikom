@@ -23,7 +23,7 @@ class PembayaranEwalletController extends Controller
                 // 'keterangan' => 'nullable|string|max:255',
             ]);
 
-            $adminFee = \DB::table('opsi_bayars')
+            $adminFee = DB::table('opsi_bayars')
                 ->where('kode', $validated['metode_pembayaran'])
                 ->value('biaya_tetap');
 

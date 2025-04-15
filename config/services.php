@@ -36,9 +36,10 @@ return [
     ],
     'xendit' => [
         // 'api_key' => env('XENDIT_API_KEY'),
-        'api_key' => env('eG5kX2RldmVsb3BtZW50XzVVWkNWUjJwbU1vOXpqbkZLV2pER2FValNXRFdYeExVVUt0QmNJWVhsaVV5OWJxWHBvdmx1SzNHdTBpWFFDOg=='),
+        // 'api_key' => env('eG5kX2RldmVsb3BtZW50XzVVWkNWUjJwbU1vOXpqbkZLV2pER2FValNXRFdYeExVVUt0QmNJWVhsaVV5OWJxWHBvdmx1SzNHdTBpWFFDOg=='),
+        'api_key' => env('XENDIT_API_KEY'),
         'user_id' => env('XENDIT_USER_ID'),
-        // 'user_id' => env('65694e8b303521a8abfbd7db'),
+        // 'user_id' => '63479e04b494b973ee2938ae',
     ],
     'finpay' => [
         'merchant_id' => 'APS023',
