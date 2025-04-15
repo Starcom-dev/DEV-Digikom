@@ -33,16 +33,23 @@ class PembayaranQrisController extends Controller
             $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
 
             // Konfigurasi payload untuk QRIS
+            // $payload = [
+            //     "id" => now(),
+            //     "reference_id" => $id_transaksi,
+            //     "currency" => "IDR",
+            //     "amount" => $nominal,
+            //     "checkout_method" => "ONE_TIME_PAYMENT",
+            //     "channel_code" => $validated['metode_pembayaran'],
+            //     "channel_properties" => [
+            //         'success_redirect_url' => config('app.url'),
+            //     ],
+            // ];
             $payload = [
-                "id" => now(),
-                "reference_id" => $id_transaksi,
-                "currency" => "IDR",
-                "amount" => $nominal,
-                "checkout_method" => "ONE_TIME_PAYMENT",
-                "channel_code" => $validated['metode_pembayaran'],
-                "channel_properties" => [
-                    'success_redirect_url' => config('app.url'),
-                ],
+                'external_id' => $id_transaksi,
+                'type' => 'DYNAMIC',
+                'currency' => 'IDR',
+                'amount' => $nominal,
+                'callback_url' => config('app.url'),
             ];
 
             Log::channel('single')->debug('Payload untuk API Xendit QRIS', $payload);
@@ -84,22 +91,33 @@ class PembayaranQrisController extends Controller
             Log::channel('single')->info('Transaksi berhasil diproses', $json);
 
             // Ambil informasi kode bayar (QRIS)
-            $kode_bayar = $json['actions']['qr_checkout_string'] ?? null;
+            // $kode_bayar = $json['actions']['qr_checkout_string'] ?? null;
 
             // Simpan transaksi ke database
-            // DB::table('tagihan')->insert([
-            //     'user_id' => $user->id,
-            //     'iuran_id' => $validated['iuran_id'],
-            //     'status' => 'Belum Lunas',
-            //     'tanggal_bayar' => null,
-            //     'nominal' => $nominal,
-            //     'metode_pembayaran' => $validated['metode_pembayaran'],
-            //     'keterangan' => $validated['keterangan'],
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ]);
+            $tagihan_id = DB::table('tagihans')->insertGetId([
+                'user_id' => $user->id,
+                'iuran_id' => $validated['iuran_id'],
+                'status' => 'Belum Lunas',
+                'tanggal_bayar' => null,
+                'nominal' => $nominal,
+                'metode_pembayaran' => $validated['metode_pembayaran'],
+                'keterangan' => $validated['keterangan'],
+                'created_at' => now(),
+                'updated_at' => now(),
+                'payment_status' => 'PENDING'
+            ]);
 
-            // Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
+            DB::table('transactions')->insert([
+                'status_transaction' => 'pending',
+                'id_transaction' => $id_transaksi,  // You may want to change this if it's generated elsewhere
+                'created_at' => now(),
+                'user_id' => $user->id,
+                // 'tagihan_id' => $validated['iuran_id'],
+                'tagihan_id' => $tagihan_id,
+                'nominal' => $nominal
+            ]);
+
+            Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
 
             return response()->json([
                 'status' => 'success',
@@ -108,7 +126,7 @@ class PembayaranQrisController extends Controller
                     'id' => $json['id'],
                     'status' => $json['status'],
                     'channel_code' => $validated['metode_pembayaran'],
-                    'kode_bayar' => $kode_bayar, // Menampilkan QRIS untuk pembayaran
+                    'qr_string' => $json['qr_string'], // Menampilkan QRIS untuk pembayaran
                 ],
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
