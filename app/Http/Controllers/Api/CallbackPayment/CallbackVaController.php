@@ -27,7 +27,7 @@ class CallbackVaController extends Controller
             }
             $payload = json_decode(json_encode($request->all()));
             // $status = $payload->data->status ?? null;
-            $external_id = $payload->data->external_id ?? null;
+            $external_id = $payload->external_id ?? null;
             $transaction = DB::table('transactions')->where('id_transaction', $external_id)->first();
             if ($transaction) {
                 // update status transasction pada table transactions
