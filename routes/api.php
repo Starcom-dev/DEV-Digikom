@@ -80,7 +80,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('/pendidikan', PendidikanController::class);
     Route::apiResource('/agama', AgamaController::class);
     Route::apiResource('/pekerjaan', PekerjaanController::class);
-    Route::apiResource('/tagihan', TagihanController::class);
+    // Route::apiResource('/tagihan', TagihanController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
     Route::apiResource('/opsi-bayar', OpsiBayarController::class);
     Route::apiResource('/kategori-bayar', KategoriPembayaranController::class);
