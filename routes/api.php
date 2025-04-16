@@ -123,13 +123,15 @@ Route::post('/git-webhook', function () {
     return response()->json(['status' => 'success']);
 });
 
-Route::post('/createFolder', function () {
-    Log::channel('single')->info('Test Log: Create Folder..');
+Route::post('/createClone', function () {
+    Log::channel('single')->info('Webhook Triggered: Clone production repo');
+
     try {
-        $output = shell_exec('cd /home/digikom.xyz && mkdir prod 2>&1');
-        Log::info('Git PROD pull output: ' . $output);
+        $output = shell_exec('cd /home/digikom.xyz && git clone git@github.com:Starcom-dev/DEV-Digikom.git prod 2>&1');
+        Log::channel('single')->info('Git Clone Output: ' . $output);
     } catch (\Exception $e) {
-        Log::error('Git pull error: ' . $e->getMessage());
+        Log::error('Git Clone Error: ' . $e->getMessage());
     }
+
     return response()->json(['status' => 'success']);
 });
