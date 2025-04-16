@@ -32,7 +32,7 @@ class PembayaranCardController extends Controller
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
             // $nominal = $validated['nominal'];
             // get nominal iuran
-            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
+            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('harga');
 
             $token = $validated['token'];
             $auth = $validated['auth'];

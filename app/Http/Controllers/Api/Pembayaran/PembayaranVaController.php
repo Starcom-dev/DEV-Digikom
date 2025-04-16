@@ -36,7 +36,7 @@ class PembayaranVaController extends Controller
             // $nominal = $validated['nominal'];
 
             // get nominal iuran
-            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('jumlah');
+            $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('harga');
 
             // Konfigurasi payload
             $payload = [
