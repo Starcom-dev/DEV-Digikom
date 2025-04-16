@@ -45,7 +45,7 @@ class PembayaranCardController extends Controller
             $payload = [
                 "token_id" => $token,
                 "external_id" => $id_transaksi,
-                "amount" => 30000,
+                "amount" => $nominal,
                 "authentication_id" => $auth,
                 "card_cvn" => $cvn,
             ];

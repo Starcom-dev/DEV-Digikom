@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
+use App\Http\Controllers\Api\Pembayaran\PembayaranCreditCardController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -89,6 +90,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/tagihan/bayar-card', [PembayaranCardController::class, 'bayarCard']);
     Route::post('/tagihan/bayar-va', [PembayaranVaController::class, 'bayarVa']);
     Route::post('/tagihan/bayar-qris', [PembayaranQrisController::class, 'bayarQris']);
+    Route::post('/tagihan/bayar-credit-card', [PembayaranCreditCardController::class, 'pay']);
 
     Route::get('transactions', [TransactionController::class, 'index']);
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
