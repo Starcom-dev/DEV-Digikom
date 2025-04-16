@@ -14,7 +14,7 @@ class Iuran extends Model
      *
      * @var array
      */
-    protected $fillable = ['jumlah', 'keterangan', 'tempo', 'created_by', 'masa_aktif'];
+    protected $fillable = ['harga', 'keterangan', 'tempo', 'created_by', 'masa_aktif'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
         'tempo' => 'datetime',

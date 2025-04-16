@@ -64,7 +64,7 @@ Route::middleware(['jwt.auth'])->group(function () {
         ]);
 
     Route::apiResource('/kegiatan', KegiatanController::class)->middleware(CheckMembership::class);
-    Route::apiResource('/iuran', IuranController::class)
+    Route::apiResource('/subscription', IuranController::class)
         ->names([
             'index' => 'iuran_custom.index',
             'store' => 'iuran_custom.store',

@@ -16,7 +16,7 @@ class IuranController extends Controller
         // $iurans = Iuran::latest()->paginate(5);
         $iurans = Iuran::with('creator')->latest()->get();
         //return collection of posts as a resource
-        return new IuranResource(true, 'List Data Iuran', $iurans);
+        return new IuranResource(true, 'List Data Subscription', $iurans);
     }
 
     public function show($id)
@@ -35,5 +35,4 @@ class IuranController extends Controller
         // Return data iuran
         return new IuranResource(true, 'Detail Data Iuran', $iuran);
     }
-
 }
