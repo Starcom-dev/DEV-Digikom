@@ -29,6 +29,7 @@ class CallbackQrisController extends Controller
             $status = $payload->status ?? null;
             $referenceId = $payload->qr_code->external_id ?? null;
             Log::channel('single')->info('Status Callback QRIS ' . $status);
+            Log::channel('single')->info('Reference Callback QRIS ' . $referenceId);
             if ($status === 'COMPLETED') {
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
@@ -40,7 +41,7 @@ class CallbackQrisController extends Controller
                     // get data tagihan
                     $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
                     // update status, tgl bayar dan payment_status pada table tagihans
-                    DB::table('tagihans')->where(['id' => $transaction])->update([
+                    DB::table('tagihans')->where(['id' => $transaction->id_tagihan])->update([
                         'tanggal_bayar' => now(),
                         'status' => 'Lunas',
                         'payment_status' => 'SUCCEEDED',
