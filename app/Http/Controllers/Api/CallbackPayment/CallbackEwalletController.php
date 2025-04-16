@@ -70,6 +70,7 @@ class CallbackEwalletController extends Controller
                 }
             }
             DB::commit();
+            Log::channel('single')->info('Update status transaction berhasil');
             return response('', 200);
         } catch (\Throwable $th) {
             DB::rollBack();

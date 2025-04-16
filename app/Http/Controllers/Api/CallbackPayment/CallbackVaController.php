@@ -62,6 +62,7 @@ class CallbackVaController extends Controller
                     'membership_end' => $membershipEnd
                 ]);
                 DB::commit();
+                Log::channel('single')->info('Update status transaction berhasil');
             } else {
                 DB::rollBack();
                 Log::warning("Transaksi dengan ID $external_id tidak ditemukan.");
