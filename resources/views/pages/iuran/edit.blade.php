@@ -35,9 +35,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="jumlah" class="text-white" style="font-weight: bold;">Jumlah</label>
-                            <input type="text" class="form-control" name="jumlah" id="jumlah"
-                                value="{{ $iuran->jumlah }}"
+                            <label for="harga" class="text-white" style="font-weight: bold;">Harga</label>
+                            <input type="text" class="form-control" name="harga" id="harga"
+                                value="{{ $iuran->harga }}"
                                 onfocus="this.style.backgroundColor='#2A3038'; this.style.color='#ffffff';" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Update iuran</button>

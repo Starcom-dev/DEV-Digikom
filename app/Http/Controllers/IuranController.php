@@ -43,12 +43,12 @@ class IuranController extends Controller
     {
         $request->validate([
             'masa_aktif' => 'required|numeric',
-            'jumlah' => 'required|numeric',
+            'harga' => 'required|numeric',
         ]);
 
         $iuran = new Iuran;
         $iuran->masa_aktif = $request->masa_aktif;
-        $iuran->jumlah = $request->jumlah;
+        $iuran->harga = $request->harga;
         $iuran->keterangan = $request->masa_aktif . ' Bulan';
         $iuran->created_by = Auth::guard('admin')->user()->id;
         $iuran->save();
@@ -66,12 +66,12 @@ class IuranController extends Controller
     {
         $request->validate([
             'masa_aktif' => 'required|numeric',
-            'jumlah' => 'required|numeric',
+            'harga' => 'required|numeric',
         ]);
 
         $iuran = Iuran::findOrFail($id);
         $iuran->masa_aktif = $request->masa_aktif;
-        $iuran->jumlah = $request->jumlah;
+        $iuran->harga = $request->harga;
         $iuran->keterangan = $request->masa_aktif . ' Bulan';
         $iuran->created_by = Auth::guard('admin')->user()->id;
         $iuran->save();

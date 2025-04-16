@@ -56,7 +56,7 @@
                                     <th style="color: black;">
                                         <a href="{{ route('iuran.index', array_merge(request()->all(), ['sort_by' => 'jumlah', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}"
                                             style="color: black;   text-decoration: none!important;">
-                                            Jumlah <span
+                                            Harga <span
                                                 class="mdi mdi-arrow-expand
                                 {{ request('order') === 'asc' ? 'asc' : 'desc' }}"></span>
                                         </a>
@@ -71,7 +71,7 @@
                                         style="cursor: pointer;">
                                         <td>{{ $loop->iteration }}</td>
                                         {{-- <td>{{ $item->tahun }}</td> --}}
-                                        <td>{{ 'Rp ' . number_format($item->jumlah, 0, ',', '.') }}</td>
+                                        <td>{{ 'Rp ' . number_format($item->harga, 0, ',', '.') }}</td>
                                         <td>{{ $item->masa_aktif }}</td>
                                         <td>
                                             <a href="{{ route('iuran.edit', $item->id) }}"

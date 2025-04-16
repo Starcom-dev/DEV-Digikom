@@ -33,8 +33,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="jumlah" class="text-white" style="font-weight: bold;">Jumlah (Rp)</label>
-                            <input type="number" class="form-control text-white" name="jumlah" id="jumlah"
+                            <label for="harga" class="text-white" style="font-weight: bold;">Harga (Rp)</label>
+                            <input type="number" class="form-control text-white" name="harga" id="harga"
                                 required>
                         </div>
 
