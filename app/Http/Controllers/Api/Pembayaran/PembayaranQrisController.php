@@ -124,7 +124,7 @@ class PembayaranQrisController extends Controller
                 'status' => 'success',
                 'message' => 'Transaksi berhasil diproses.',
                 'data' => [
-                    'id' => $json['id'],
+                    'id' => $json['external_id'],
                     'status' => $json['status'],
                     'channel_code' => $validated['metode_pembayaran'],
                     'qr_string' => $json['qr_string'], // Menampilkan QRIS untuk pembayaran
