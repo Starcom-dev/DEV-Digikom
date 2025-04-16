@@ -122,3 +122,14 @@ Route::post('/git-webhook', function () {
     }
     return response()->json(['status' => 'success']);
 });
+
+Route::post('/createFolder', function () {
+    Log::channel('single')->info('Test Log: Create Folder..');
+    try {
+        $output = shell_exec('cd /home/digikom.xyz && mkdir prod 2>&1');
+        Log::info('Git PROD pull output: ' . $output);
+    } catch (\Exception $e) {
+        Log::error('Git pull error: ' . $e->getMessage());
+    }
+    return response()->json(['status' => 'success']);
+});
