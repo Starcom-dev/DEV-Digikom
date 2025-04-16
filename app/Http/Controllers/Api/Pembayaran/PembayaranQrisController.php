@@ -49,7 +49,7 @@ class PembayaranQrisController extends Controller
                 'type' => 'DYNAMIC',
                 'currency' => 'IDR',
                 'amount' => $nominal,
-                'callback_url' => config('app.url') . 'api/callbackVa',
+                'callback_url' => config('app.url') . 'api/callbackQris',
             ];
 
             Log::channel('single')->debug('Payload untuk API Xendit QRIS', $payload);
