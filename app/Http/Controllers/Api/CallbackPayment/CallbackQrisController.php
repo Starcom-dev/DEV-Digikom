@@ -26,8 +26,8 @@ class CallbackQrisController extends Controller
                 return response()->json(['message' => 'Token callback invalid'], 401);
             }
             $payload = json_decode(json_encode($request->all()));
-            $status = $payload->data->status ?? null;
-            $referenceId = $payload->data->reference_id ?? null;
+            $status = $payload->status ?? null;
+            $referenceId = $payload->reference_id ?? null;
             Log::channel('single')->info('Status Callback QRIS' . $status);
             if ($status === 'COMPLETED') {
                 Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
