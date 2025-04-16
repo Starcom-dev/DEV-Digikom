@@ -41,7 +41,7 @@ class CallbackQrisController extends Controller
                     // get data tagihan
                     $tagihan = DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->first();
                     // update status, tgl bayar dan payment_status pada table tagihans
-                    DB::table('tagihans')->where(['id' => $transaction->id_tagihan])->update([
+                    DB::table('tagihans')->where(['id' => $transaction->tagihan_id])->update([
                         'tanggal_bayar' => now(),
                         'status' => 'Lunas',
                         'payment_status' => 'SUCCEEDED',
