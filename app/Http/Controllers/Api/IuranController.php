@@ -14,7 +14,7 @@ class IuranController extends Controller
     {
         //get all posts
         // $iurans = Iuran::latest()->paginate(5);
-        $iurans = Iuran::with('creator')->latest()->get();
+        $iurans = Iuran::orderBy('harga', 'ASC')->get();
         //return collection of posts as a resource
         return new IuranResource(true, 'List Data Subscription', $iurans);
     }
