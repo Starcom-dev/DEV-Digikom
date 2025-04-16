@@ -49,8 +49,7 @@ class PembayaranQrisController extends Controller
                 'type' => 'DYNAMIC',
                 'currency' => 'IDR',
                 'amount' => $nominal,
-                // 'callback_url' => config('app.url') . 'api/callbackVa',
-                'callback_url' => 'https://dev.digikom.xyz/api/callbackQris'
+                'callback_url' => config('app.url') . 'api/callbackVa',
             ];
 
             Log::channel('single')->debug('Payload untuk API Xendit QRIS', $payload);
@@ -65,7 +64,6 @@ class PembayaranQrisController extends Controller
                     'Content-Type' => 'application/json',
                 ])
                 ->post('https://api.xendit.co/qr_codes', $payload);
-            // ->post('https://api.xendit.co/qr/charges', $payload);
 
             // Log status dan respons
             Log::channel('single')->info('Status respons dari API Xendit', [
