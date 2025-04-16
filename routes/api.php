@@ -111,11 +111,6 @@ Route::get('/privacy/show', function () {
 Route::post('/callbackEwallet', [CallbackEwalletController::class, 'handle']);
 Route::post('/callbackQris', [CallbackQrisController::class, 'handle']);
 Route::post('/callbackVa', [CallbackVaController::class, 'handle']);
-Route::get('/getApiKey', function () {
-    $api = config('services.xendit.api_key');
-    $auth = 'Basic ' . base64_encode($api);
-    return $auth;
-});
 // github webhook
 Route::post('/git-webhook', function () {
     Log::channel('single')->info('Test Log: Verifiy git webhook..');
