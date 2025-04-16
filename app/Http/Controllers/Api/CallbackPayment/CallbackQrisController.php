@@ -27,10 +27,9 @@ class CallbackQrisController extends Controller
             }
             $payload = json_decode(json_encode($request->all()));
             $status = $payload->status ?? null;
-            $referenceId = $payload->reference_id ?? null;
-            Log::channel('single')->info('Status Callback QRIS' . $status);
+            $referenceId = $payload->qr_code->external_id ?? null;
+            Log::channel('single')->info('Status Callback QRIS ' . $status);
             if ($status === 'COMPLETED') {
-                Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
                     // update status transaction pada table transactions
