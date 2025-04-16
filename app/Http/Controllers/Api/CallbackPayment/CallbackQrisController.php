@@ -61,6 +61,7 @@ class CallbackQrisController extends Controller
                         'membership_end' => $membershipEnd
                     ]);
                     DB::commit();
+                    Log::channel('singel')->info('Update status transaction berhasil');
                 } else {
                     DB::rollBack();
                     Log::warning("Transaksi dengan ID $referenceId tidak ditemukan");
