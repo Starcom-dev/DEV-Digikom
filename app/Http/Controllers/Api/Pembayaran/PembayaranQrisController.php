@@ -89,7 +89,7 @@ class PembayaranQrisController extends Controller
 
             // Ambil respons JSON dari Xendit
             $json = $response->json();
-            Log::channel('single')->info('Transaksi berhasil diproses', $json);
+            Log::channel('single')->info('Transaksi QRIS berhasil diproses', $json);
 
             // Ambil informasi kode bayar (QRIS)
             // $kode_bayar = $json['actions']['qr_checkout_string'] ?? null;

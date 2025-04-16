@@ -83,7 +83,7 @@ class PembayaranVaController extends Controller
 
             // Ambil respons JSON dari Xendit
             $json = $response->json();
-            Log::channel('single')->info('Transaksi berhasil diproses', $json);
+            Log::channel('single')->info('Transaksi VA berhasil diproses', $json);
 
             // Simpan transaksi  ke database
             $tagihan_id = DB::table('tagihans')->insertGetId([

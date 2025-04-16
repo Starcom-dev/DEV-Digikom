@@ -84,7 +84,7 @@ class PembayaranEwalletController extends Controller
 
             // Ambil respons JSON dari Xendit
             $json = $response->json();
-            Log::channel('single')->info('Transaksi berhasil diproses', $json);
+            Log::channel('single')->info('Transaksi Ewallet berhasil diproses', $json);
 
             // Ambil informasi kode bayar
             $kode_bayar = $this->getKodeBayar($validated['metode_pembayaran'], $json, $validated['no_hp']);
