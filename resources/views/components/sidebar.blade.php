@@ -72,24 +72,24 @@
                    </ul>
                </div>
            </li>
-
-           <!-- Iuran -->
+           <!-- Iuran (Dropdown) -->
            <li class="nav-item menu-items">
                <a class="nav-link {{ request()->is('iuran*') || request()->is('tagihan*') || request()->is('laporan-iuran*') ? 'active' : '' }}"
-                   data-toggle="collapse2" href="#iuran" aria-expanded="false" aria-controls="iuran">
+                   data-toggle="collapse" href="#iuran" aria-expanded="false" aria-controls="iuran">
                    <span class="menu-icon">
-                       <i class="mdi mdi-cash-multiple"></i>
+                       <i class="mdi mdi-contacts"></i>
                    </span>
                    <span class="menu-title">Iuran</span>
                    <i class="menu-arrow"></i>
                </a>
-               <div class="collapse2 {{ request()->is('iuran*') || request()->is('tagihan*') || request()->is('laporan-iuran*') ? 'show' : '' }}"
+               <div class="collapse {{ request()->is('iuran*') || request()->is('tagihan*') || request()->is('laporan-iuran*') ? 'show' : '' }}"
                    id="iuran">
                    <ul class="nav flex-column sub-menu">
-                       <li class="nav-item"><a class="nav-link" href="{{ route('iuran.index') }}">Setup Iuran</a></li>
-                   </ul>
-                   <ul class="nav flex-column sub-menu">
-                       <li class="nav-item"><a class="nav-link" href="{{ route('iuran.tagihan') }}">Laporan Iuran</a>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{{ route('iuran.index') }}">Setup Iuran</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{{ route('iuran.tagihan') }}">LaporanIuran</a>
                        </li>
                    </ul>
                </div>
