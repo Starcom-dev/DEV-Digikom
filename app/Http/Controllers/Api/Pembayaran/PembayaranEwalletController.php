@@ -137,9 +137,8 @@ class PembayaranEwalletController extends Controller
                 'nominal' => $nominal,
                 'admin' => $adminFee,
                 'total' => $nominal + $adminFee,
-                'transaction_id' => $id_transaksi,
                 'data' => [
-                    'id' => $json['id'],
+                    'id' => $id_transaksi,
                     'status' => $json['status'],
                     'channel_code' => $validated['metode_pembayaran'],
                     'kode_bayar' => $kode_bayar,
