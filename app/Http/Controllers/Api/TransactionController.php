@@ -79,7 +79,7 @@ class TransactionController extends Controller
         $user = JWTAuth::user();
         Log::channel('single')->info('Payload get transaction, ID = ' . $id);
         // Cari transaksi berdasarkan ID dan pastikan milik user yang sedang login
-        $transaction = Transaction::where('id', $id)
+        $transaction = Transaction::where('id_transaction', $id)
             ->where('user_id', $user->id)
             ->first();
 
