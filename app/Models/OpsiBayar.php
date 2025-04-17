@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class OpsiBayar extends Model
 {
     use HasFactory;
-    
+
     public $timestamps = false;
-    
+
     /**
      * Fillable attributes.
      *
@@ -26,12 +27,17 @@ class OpsiBayar extends Model
         'deskripsi',
         'icon'
     ];
-    
+
     /**
      * Relationship with the Kategori model.
      */
     public function kategori()
     {
         return $this->belongsTo(KategoriPembayaran::class, 'id_kategori');
+    }
+
+    public function tagihan()
+    {
+        return $this->hasMany(Tagihan::class, 'metode_pembayaran', 'kode');
     }
 }

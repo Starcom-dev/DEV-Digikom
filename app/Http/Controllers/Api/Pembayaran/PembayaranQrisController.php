@@ -103,7 +103,8 @@ class PembayaranQrisController extends Controller
                 'keterangan' => $validated['keterangan'],
                 'created_at' => now(),
                 'updated_at' => now(),
-                'payment_status' => 'PENDING'
+                'payment_status' => 'PENDING',
+                'kode_bayar' => $json['qr_string']
             ]);
 
             DB::table('transactions')->insert([

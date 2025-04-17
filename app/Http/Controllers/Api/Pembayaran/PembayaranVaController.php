@@ -96,6 +96,7 @@ class PembayaranVaController extends Controller
                 'payment_status' => $json['status'],
                 'created_at' => now(),
                 'updated_at' => now(),
+                'kode_bayar' => $json['account_number'],
             ]);
 
             DB::table('transactions')->insertGetId([

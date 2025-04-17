@@ -90,25 +90,6 @@ class PembayaranEwalletController extends Controller
             $kode_bayar = $this->getKodeBayar($validated['metode_pembayaran'], $json, $validated['no_hp']);
 
             // Simpan transaksi ke database
-            // DB::table('tagihans')
-            //     ->where('iuran_id', $validated['iuran_id'])
-            //     ->update([
-            //         'user_id' => $user->id,
-            //         'status' => 'Belum Lunas',
-            //         'tanggal_bayar' => now(),
-            //         'nominal' => $validated['nominal'] + $adminFee,
-            //         'metode_pembayaran' => $validated['metode_pembayaran'],
-            //         'payment_status' => $json['status'],
-            //         'created_at' => now(),
-            //         'updated_at' => now(),
-            //     ]);
-            // $tagihan = DB::table('tagihans')->where('iuran_id', $validated['iuran_id'])->first();
-            // if (!$tagihan) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Tagihan tidak ditemukan'
-            //     ]);
-            // }
             $tagihan_id = DB::table('tagihans')->insertGetId([
                 'user_id' => $user->id,
                 'iuran_id' => $validated['iuran_id'],
@@ -118,6 +99,7 @@ class PembayaranEwalletController extends Controller
                 'payment_status' => $json['status'],
                 'created_at' => now(),
                 'updated_at' => now(),
+                'kode_bayar' => $kode_bayar,
             ]);
 
             DB::table('transactions')->insert([
@@ -125,7 +107,6 @@ class PembayaranEwalletController extends Controller
                 'id_transaction' => $id_transaksi,  // You may want to change this if it's generated elsewhere
                 'created_at' => now(),
                 'user_id' => $user->id,
-                // 'tagihan_id' => $validated['iuran_id'],
                 'tagihan_id' => $tagihan_id,
                 'nominal' => $nominal + $adminFee,
             ]);

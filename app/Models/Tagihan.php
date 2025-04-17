@@ -14,7 +14,7 @@ class Tagihan extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'iuran_id', 'status', 'tanggal_bayar', 'nominal', 'metode_pembayaran', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'iuran_id', 'status', 'tanggal_bayar', 'nominal', 'metode_pembayaran', 'created_at', 'updated_at', 'kode_bayar'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
         'updated_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
@@ -29,8 +29,10 @@ class Tagihan extends Model
     }
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'tagihan_id', 'id');
+        return $this->belongsTo(Transaction::class, 'id', 'tagihan_id');
     }
-
+    public function opsiBayar()
+    {
+        return $this->belongsTo(OpsiBayar::class, 'metode_pembayaran', 'kode');
+    }
 }
-
