@@ -115,8 +115,9 @@ class PembayaranVaController extends Controller
                 'nominal' => $nominal,
                 'admin' => $adminFee,
                 'total' => $nominal + $adminFee,
+                'id_transaksi' => $id_transaksi,
                 'data' => [
-                    'id' => $id_transaksi,
+                    'id' => $json['id'],
                     'status' => $json['status'],
                     'channel_code' => $validated['metode_pembayaran'],
                     'kode_bayar' => $json['account_number'], // Ambil account_number dari response Xendit
