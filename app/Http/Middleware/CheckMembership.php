@@ -21,7 +21,7 @@ class CheckMembership
 
         if ($user->is_membership !== 'true') {
             $getHistoryTagihan = Tagihan::with(['iuran', 'transactions', 'opsiBayar'])->where(['user_id' => $user->id, 'status' => 'Belum Lunas'])->orderBy('created_at', 'DESC')->first();
-            Log::channel('single')->info('Get History Tagihan', $getHistoryTagihan->toArray());
+            Log::channel('single')->info('Get History Tagihan' . $getHistoryTagihan);
             if ($getHistoryTagihan) {
                 return response()->json([
                     'success' => false,
