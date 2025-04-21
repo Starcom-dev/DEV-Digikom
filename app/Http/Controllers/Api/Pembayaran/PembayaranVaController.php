@@ -48,15 +48,16 @@ class PembayaranVaController extends Controller
             Log::channel('single')->debug('Payload VA untuk API Xendit', $payload);
 
             // Kirim permintaan ke API Xendit menggunakan Http:: (Laravel)
+            $apiUrlXendit = config('services.xendit.api_url');
             $apiKey = config('services.xendit.api_key');
-            $authHeader = 'Basic ' . base64_encode($apiKey . ':');
+            $userId = config('services.xendit.user_id');
             $response = Http::timeout(30)  // Timeout 30 detik
+                ->withBasicAuth($apiKey, '')
                 ->withHeaders([  // Menambahkan headers kustom
-                    'Authorization' => $authHeader,
-                    'for-user-id' => config('services.xendit.user_id'),  // ID pengguna yang benar
+                    'for-user-id' => $userId,  // ID pengguna yang benar
                     'Content-Type' => 'application/json',
                 ])
-                ->post('https://api.xendit.co/callback_virtual_accounts', $payload);
+                ->post($apiUrlXendit . '/callback_virtual_accounts', $payload);
 
             // Log status dan respons
             Log::channel('single')->info('Status respons VA dari API Xendit', [

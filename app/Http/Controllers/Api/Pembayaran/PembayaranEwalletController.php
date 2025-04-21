@@ -50,14 +50,16 @@ class PembayaranEwalletController extends Controller
 
             Log::channel('single')->debug('Payload Ewallet untuk API Xendit', $payload);
 
-            $response = Http::timeout(30)  // Timeout 30 detik
-                ->withBasicAuth(config('services.xendit.api_key'), '')
+            $apiUrlXendit = config('services.xendit.api_url');
+            $apiKey = config('services.xendit.api_key');
+            $userId = config('services.xendit.user_id');
+            $response = Http::timeout(30) // Timeout 30 detik
+                ->withBasicAuth($apiKey, '')
                 ->withHeaders([  // Menambahkan headers kustom
-                    'Authorization' => 'Basic ' . base64_encode(config('services.xendit.api_key') . ':'),
-                    'for-user-id' => config('services.xendit.user_id'), // ID pengguna yang benar
+                    'for-user-id' => $userId, // ID pengguna yang benar
                     'Content-Type' => 'application/json',
                 ])
-                ->post('https://api.xendit.co/ewallets/charges', $payload);
+                ->post($apiUrlXendit . '/ewallets/charges', $payload);
 
             // Log status dan respons
             Log::channel('single')->info('Status respons Ewallet dari API Xendit', [

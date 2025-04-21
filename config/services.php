@@ -35,6 +35,7 @@ return [
         ],
     ],
     'xendit' => [
+        'api_url' => env('XENDIT_API_URL'),
         // 'api_key' => env('XENDIT_API_KEY'),
         // 'api_key' => env('eG5kX2RldmVsb3BtZW50XzVVWkNWUjJwbU1vOXpqbkZLV2pER2FValNXRFdYeExVVUt0QmNJWVhsaVV5OWJxWHBvdmx1SzNHdTBpWFFDOg=='),
         'api_key' => env('XENDIT_API_KEY'),
