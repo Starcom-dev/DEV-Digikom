@@ -17,7 +17,6 @@ class PembayaranQrisController extends Controller
             // Validasi input
             $validated = $request->validate([
                 'iuran_id' => 'required|integer',
-                // 'nominal' => 'required|numeric|min:1',
                 'metode_pembayaran' => 'required|string|in:ID_QRIS',
                 'keterangan' => 'nullable|string|max:255',
             ]);
@@ -27,23 +26,10 @@ class PembayaranQrisController extends Controller
 
             // Buat ID Transaksi unik
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
-            // $nominal = $validated['nominal'];
 
             // get nominal iuran
             $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('harga');
 
-            // Konfigurasi payload untuk QRIS
-            // $payload = [
-            //     "id" => now(),
-            //     "reference_id" => $id_transaksi,
-            //     "currency" => "IDR",
-            //     "amount" => $nominal,
-            //     "checkout_method" => "ONE_TIME_PAYMENT",
-            //     "channel_code" => $validated['metode_pembayaran'],
-            //     "channel_properties" => [
-            //         'success_redirect_url' => config('app.url'),
-            //     ],
-            // ];
             $payload = [
                 'external_id' => $id_transaksi,
                 'type' => 'DYNAMIC',
@@ -52,7 +38,7 @@ class PembayaranQrisController extends Controller
                 'callback_url' => config('app.url') . 'api/callbackQris',
             ];
 
-            Log::channel('single')->debug('Payload untuk API Xendit QRIS', $payload);
+            Log::channel('single')->debug('Payload QRIS untuk API Xendit', $payload);
 
             // Kirim permintaan ke API Xendit menggunakan Http:: (Laravel)
             $apiKey = config('services.xendit.api_key');
@@ -66,14 +52,14 @@ class PembayaranQrisController extends Controller
                 ->post('https://api.xendit.co/qr_codes', $payload);
 
             // Log status dan respons
-            Log::channel('single')->info('Status respons dari API Xendit', [
+            Log::channel('single')->info('Status respons QRIS dari API Xendit', [
                 'status_code' => $response->status(),
                 'response_body' => $response->body(),
             ]);
 
             // Cek jika request gagal
             if ($response->failed()) {
-                Log::channel('single')->error('Gagal memproses pembayaran', [
+                Log::channel('single')->error('Gagal memproses pembayaran QRIS', [
                     'status' => $response->status(),
                     'error_message' => $response->body(),
                     'response' => $response->json(),
@@ -117,7 +103,7 @@ class PembayaranQrisController extends Controller
                 'nominal' => $nominal
             ]);
 
-            Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
+            Log::channel('single')->info('Transaksi QRIS berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
 
             return response()->json([
                 'status' => 'success',

@@ -17,8 +17,7 @@ class PembayaranVaController extends Controller
         try {
             // Validasi input
             $validated = $request->validate([
-                'iuran_id' => 'required|integer',
-                // 'nominal' => 'required|numeric|min:1',
+                'iuran_id' => 'required|integer', // 'nominal' => 'required|numeric|min:1',
                 'metode_pembayaran' => 'required|string|in:BNI,MANDIRI,BRI', // misalnya, sesuaikan dengan bank yang Anda dukung
                 'no_hp' => 'nullable|string',
                 'keterangan' => 'nullable|string|max:255',
@@ -33,7 +32,6 @@ class PembayaranVaController extends Controller
 
             // Buat ID Transaksi unik
             $id_transaksi = 'VA' . now()->format('YmdHis') . $validated['iuran_id'];
-            // $nominal = $validated['nominal'];
 
             // get nominal iuran
             $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('harga');
@@ -47,7 +45,7 @@ class PembayaranVaController extends Controller
                 "expected_amount" => $nominal + $adminFee,
                 "is_single_use" => "true"
             ];
-            Log::channel('single')->debug('Payload untuk API Xendit', $payload);
+            Log::channel('single')->debug('Payload VA untuk API Xendit', $payload);
 
             // Kirim permintaan ke API Xendit menggunakan Http:: (Laravel)
             $apiKey = config('services.xendit.api_key');
@@ -60,16 +58,15 @@ class PembayaranVaController extends Controller
                 ])
                 ->post('https://api.xendit.co/callback_virtual_accounts', $payload);
 
-
             // Log status dan respons
-            Log::channel('single')->info('Status respons dari API Xendit', [
+            Log::channel('single')->info('Status respons VA dari API Xendit', [
                 'status_code' => $response->status(),
                 'response_body' => $response->body(),
             ]);
 
             // Cek jika request gagal
             if ($response->failed()) {
-                Log::channel('single')->error('Gagal memproses pembayaran', [
+                Log::channel('single')->error('Gagal memproses pembayaran VA', [
                     'status' => $response->status(),
                     'error_message' => $response->body(),
                     'response' => $response->json(),
@@ -108,7 +105,7 @@ class PembayaranVaController extends Controller
                 'nominal' => $nominal + $adminFee,
             ]);
 
-            Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
+            Log::channel('single')->info('Transaksi VA berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
 
             return response()->json([
                 'success' => true,

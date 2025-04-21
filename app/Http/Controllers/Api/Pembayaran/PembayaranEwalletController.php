@@ -17,10 +17,8 @@ class PembayaranEwalletController extends Controller
             // Validasi input
             $validated = $request->validate([
                 'iuran_id' => 'required|integer',
-                // 'nominal' => 'required|numeric|min:1',
                 'metode_pembayaran' => 'required|string|in:ID_OVO,ID_DANA,ID_LINKAJA,ID_SHOPEEPAY,ID_GOPAY,ID_QRIS',
                 'no_hp' => 'nullable|string',
-                // 'keterangan' => 'nullable|string|max:255',
             ]);
 
             $adminFee = DB::table('opsi_bayars')
@@ -32,7 +30,6 @@ class PembayaranEwalletController extends Controller
 
             // Buat ID Transaksi unik
             $id_transaksi = 'DGX' . now()->format('YmdHis') . $validated['iuran_id'];
-            // $nominal = $validated['nominal'];
 
             // get nominal iuran
             $nominal = DB::table('iurans')->where(['id' => $validated['iuran_id']])->value('harga');
@@ -51,7 +48,7 @@ class PembayaranEwalletController extends Controller
                 ]
             ];
 
-            Log::channel('single')->debug('Payload untuk API Xendit', $payload);
+            Log::channel('single')->debug('Payload Ewallet untuk API Xendit', $payload);
 
             $response = Http::timeout(30)  // Timeout 30 detik
                 ->withBasicAuth(config('services.xendit.api_key'), '')
@@ -63,14 +60,14 @@ class PembayaranEwalletController extends Controller
                 ->post('https://api.xendit.co/ewallets/charges', $payload);
 
             // Log status dan respons
-            Log::channel('single')->info('Status respons dari API Xendit', [
+            Log::channel('single')->info('Status respons Ewallet dari API Xendit', [
                 'status_code' => $response->status(),
                 'response_body' => $response->body(),
             ]);
 
             // Cek jika request gagal
             if ($response->failed()) {
-                Log::channel('single')->error('Gagal memproses pembayaran', [
+                Log::channel('single')->error('Gagal memproses pembayaran Ewallet', [
                     'status' => $response->status(),
                     'error_message' => $response->body(),
                     'response' => $response->json(),
@@ -110,7 +107,7 @@ class PembayaranEwalletController extends Controller
                 'tagihan_id' => $tagihan_id,
                 'nominal' => $nominal + $adminFee,
             ]);
-            Log::channel('single')->info('Transaksi berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
+            Log::channel('single')->info('Transaksi Ewallet berhasil disimpan', ['user_id' => $user->id, 'id_transaksi' => $id_transaksi]);
 
             return response()->json([
                 'success' => true,
