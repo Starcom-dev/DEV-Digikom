@@ -13,7 +13,7 @@ class CallbackQrisController extends Controller
     public function handle(Request $request)
     {
         // Simpan log callback untuk debug awal
-        Log::channel('single')->info('Xendit Callback QRIS:', $request->all());
+        Log::channel('single')->info('Xendit Callback QRIS:', json_decode(json_encode($request->all())));
 
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');
@@ -28,7 +28,7 @@ class CallbackQrisController extends Controller
             $payload = json_decode(json_encode($request->all()));
             $status = $payload->status ?? null;
             $referenceId = $payload->qr_code->external_id ?? null;
-            // Log::channel('single')->info('Status Callback QRIS ' . $status);
+            Log::channel('single')->info('Status Callback QRIS dari Xendit ' . $status);
             // Log::channel('single')->info('Reference Callback QRIS ' . $referenceId);
             if ($status === 'COMPLETED') {
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();

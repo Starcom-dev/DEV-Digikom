@@ -13,7 +13,7 @@ class CallbackEwalletController extends Controller
     public function handle(Request $request)
     {
         // Simpan log callback untuk debug awal
-        Log::channel('single')->info('Xendit Callback Ewallet:', $request->all());
+        Log::channel('single')->info('Xendit Callback Ewallet:', json_decode(json_encode($request->all())));
 
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');
@@ -28,8 +28,8 @@ class CallbackEwalletController extends Controller
             $payload = json_decode(json_encode($request->all()));
             $status = $payload->data->status ?? null;
             $referenceId = $payload->data->reference_id ?? null;
+            Log::channel('single')->info('Status Callback Ewallet Dari Xendit ' . $status);
             if ($status === 'SUCCEEDED') {
-                Log::channel('single')->info('Status Payment Dari Xendit ' . $status);
                 $transaction = DB::table('transactions')->where('id_transaction', $referenceId)->first();
                 if ($transaction) {
                     // update status transasction pada table transactions
@@ -81,18 +81,3 @@ class CallbackEwalletController extends Controller
         }
     }
 }
-
-// Contoh validasi sederhana
-// if ($request->has('status') && $request->status == 'PAID') {
-// Update transaksi kamu di database
-// Misalnya berdasarkan external_id atau invoice_id
-// Contoh:
-/*
-    $transaction = Transaction::where('external_id', $request->external_id)->first();
-    if ($transaction) {
-        $transaction->status = 'paid';
-        $transaction->save();
-    }
-    */
-// }
-// return response()->json(['message' => 'Callback received'], 200);
