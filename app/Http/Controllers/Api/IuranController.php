@@ -17,7 +17,7 @@ class IuranController extends Controller
         $getHistoryTagihan = Tagihan::with(['iuran', 'transactions', 'opsiBayar'])->where(['user_id' => $user->id, 'status' => 'Belum Lunas'])->orderBy('created_at', 'DESC')->first();
         Log::channel('single')->info('Get History Tagihan' . $getHistoryTagihan);
         if ($getHistoryTagihan) {
-            $nominal = $getHistoryTagihan->iuran->nominal;
+            $nominal = $getHistoryTagihan->iuran->harga;
             $adminFee = $getHistoryTagihan->opsiBayar->biaya_tetap;
             return response()->json([
                 'success' => true,
