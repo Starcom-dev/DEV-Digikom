@@ -122,3 +122,8 @@ Route::post('/git-webhook', function () {
     }
     return response()->json(['status' => 'success']);
 });
+
+// test create callback yong
+Route::post('/callbackFinpay', function () {
+    Log::channel('single')->info('Test FInpay...');
+});
