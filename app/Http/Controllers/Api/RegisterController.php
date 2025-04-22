@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -29,20 +31,20 @@ class RegisterController extends Controller
                 //'agama_id' => 'nullable|integer',
                 //'pendidikan_id' => 'nullable|integer',
             ]);
-    
+
             // Proses penyimpanan file
             //$profilePicturePath = $request->file('profile_picture')->store('profile_pictures', 'public');
-    
+
             // Proses penyimpanan data user
             $user = User::create([
                 'full_name' => $request->full_name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone_number' => $request->phone_number,
-              	'status' => 2
+                'status' => 2
                 //'profile_picture' => $profilePicturePath,
                 //'nomor_ktp' => $request->nomor_ktp,
-               	//'tanggal_lahir' => $request->tanggal_lahir,
+                //'tanggal_lahir' => $request->tanggal_lahir,
                 //'tempat_lahir' => $request->tempat_lahir,
                 //'alamat' => $request->alamat,
                 //'pekerjaan_id' => $request->pekerjaan_id,
@@ -55,9 +57,10 @@ class RegisterController extends Controller
             //     'jabatan_pengurus' => 4, // Ubah sesuai dengan kebutuhan
             //     'nama_pengurus' => $user->id
             // ]);
-    
+
             return response()->json(new UserResource(true, 'User Registered Successfully', $user), 201);
         } catch (\Exception $e) {
+            Log::channel('single')->info('Error register' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to register user',
@@ -65,16 +68,16 @@ class RegisterController extends Controller
             ], 500);
         }
     }
-    
+
     public function destroy($id)
     {
         try {
             // Cari user berdasarkan ID
             $user = User::findOrFail($id);
-    
+
             // Hapus user
             $user->delete();
-    
+
             // Berikan respon sukses
             return response()->json([
                 'success' => true,
