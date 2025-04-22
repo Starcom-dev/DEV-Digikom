@@ -20,7 +20,7 @@ class RegisterController extends Controller
                 'full_name' => 'required|string|max:255',
                 'email' => 'required|string|email|unique:users,email',
                 'password' => 'required|string|min:6',
-                'phone_number' => 'required|string|regex:/^[0-9]{10,15}$/|unique:users,phone_number',
+                // 'phone_number' => 'required|string|regex:/^[0-9]{10,15}$/|unique:users,phone_number',
                 //'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                 //'nomor_ktp' => 'nullable|integer|unique:users,nomor_ktp',
                 //'tanggal_lahir' => 'nullable|date',
@@ -40,7 +40,7 @@ class RegisterController extends Controller
                 'full_name' => $request->full_name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'phone_number' => $request->phone_number,
+                // 'phone_number' => $request->phone_number,
                 'status' => 2
                 //'profile_picture' => $profilePicturePath,
                 //'nomor_ktp' => $request->nomor_ktp,
