@@ -13,7 +13,7 @@ class CallbackQrisController extends Controller
     public function handle(Request $request)
     {
         // Simpan log callback untuk debug awal
-        Log::channel('single')->info('Xendit Callback QRIS:', json_decode(json_encode($request->all())));
+        Log::channel('single')->info('Xendit Callback QRIS:' . json_encode($request->all()));
 
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');

@@ -13,7 +13,7 @@ class CallbackVaController extends Controller
     public function handle(Request $request)
     {
         // Simpan log callback untuk debug awal
-        Log::channel('single')->info('Xendit Callback VA:', json_decode(json_encode($request->all())));
+        Log::channel('single')->info('Xendit Callback VA:' . json_encode($request->all()));
 
         $token = $request->header('x-callback-token');
         $callBackToken = env('XENDIT_CALLBACK_TOKEN');
