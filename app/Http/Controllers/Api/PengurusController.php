@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\PengurusResource;
+use App\Models\Jabatan;
 use App\Models\Pengurus;
 
 class PengurusController extends Controller
@@ -36,4 +37,17 @@ class PengurusController extends Controller
         return new PengurusResource(true, 'Detail Data Pengurus', $pengurus);
     }
 
+    public function search(Jabatan $jabatan)
+    {
+        $idJabatan = $jabatan->id;
+        $pengurus = Pengurus::with('user', 'jabatan')->where('jabatan_pengurus', $idJabatan)->get();
+        if (count($pengurus) <= 0) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tidak ada pengurus dengan jabatan ' . $jabatan->nama_jabatan,
+                'data' => []
+            ], 404);
+        }
+        return new PengurusResource(true, 'Detail Data Pengurus', $pengurus);
+    }
 }

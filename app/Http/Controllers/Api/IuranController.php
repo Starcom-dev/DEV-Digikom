@@ -37,7 +37,7 @@ class IuranController extends Controller
             //get all posts
             $iurans = Iuran::orderBy('harga', 'ASC')->get();
             //return collection of posts as a resource
-            return new IuranResource(true, 'List Data Subscription', $iurans);
+            return new IuranResource(true, 'List Data Iuran', $iurans);
         }
     }
 

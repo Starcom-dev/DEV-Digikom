@@ -31,6 +31,7 @@ use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
 use App\Http\Controllers\API\CategoryUsahaController;
+use App\Http\Controllers\API\JabatanController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
@@ -54,6 +55,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/user/edit-foto-profile', [UserController::class, 'updateFoto']);
     // ubah agar tidak menggunakan route post
     Route::apiResource('/usaha', UsahaController::class)->middleware(CheckMembership::class);
+
     Route::apiResource('/berita', BeritaController::class)
         ->middleware(CheckMembership::class)
         ->names([
@@ -66,7 +68,8 @@ Route::middleware(['jwt.auth'])->group(function () {
         ]);
 
     Route::apiResource('/kegiatan', KegiatanController::class)->middleware(CheckMembership::class);
-    Route::apiResource('/subscription', IuranController::class)
+
+    Route::apiResource('/iuran', IuranController::class)
         ->names([
             'index' => 'iuran_custom.index',
             'store' => 'iuran_custom.store',
@@ -74,21 +77,37 @@ Route::middleware(['jwt.auth'])->group(function () {
             'update' => 'iuran_custom.update',
             'destroy' => 'iuran_custom.destroy',
         ]);
+
     Route::apiResource('/anggaran-dasar', AnggaranDasarController::class)->middleware(CheckMembership::class);
+
     Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class)->middleware(CheckMembership::class);
+
     Route::apiResource('/peraturan-organisasi', PeraturanOrganisasiController::class);
+
+    Route::apiResource('/jabatan', JabatanController::class);
+
     Route::apiResource('/pengurus', PengurusController::class);
+    Route::get('/pengurus/jabatan/{jabatan}', [PengurusController::class, 'search']);
+
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
-    Route::apiResource('/pendidikan', PendidikanController::class);
-    Route::apiResource('/agama', AgamaController::class);
-    Route::apiResource('/pekerjaan', PekerjaanController::class);
-    // Route::apiResource('/tagihan', TagihanController::class);
+    Route::resource('/bidang-usaha', BidangUsahaController::class);
+    Route::resource('/category-usaha', CategoryUsahaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
+
+    Route::apiResource('/pendidikan', PendidikanController::class);
+
+    Route::apiResource('/agama', AgamaController::class);
+
+    Route::apiResource('/pekerjaan', PekerjaanController::class);
+
+    // Route::apiResource('/tagihan', TagihanController::class);
+
     Route::apiResource('/opsi-bayar', OpsiBayarController::class);
+
     Route::apiResource('/kategori-bayar', KategoriPembayaranController::class);
 
-    Route::post('/tagihan/bayar-ewallet', [PembayaranEwalletController::class, 'bayarEwallet']);
     // Route::post('/tagihan/bayar-card', [PembayaranCardController::class, 'bayarCard']);
+    Route::post('/tagihan/bayar-ewallet', [PembayaranEwalletController::class, 'bayarEwallet']);
     Route::post('/tagihan/bayar-va', [PembayaranVaController::class, 'bayarVa']);
     Route::post('/tagihan/bayar-qris', [PembayaranQrisController::class, 'bayarQris']);
 
@@ -97,8 +116,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
 
-    Route::resource('/bidang-usaha', BidangUsahaController::class);
-    Route::resource('/category-usaha', CategoryUsahaController::class);
+    // Route::get('/tentang-organisasi', )
 
     // finpay payment
     Route::post('/finpay', [FinpayController::class, 'bayar']);

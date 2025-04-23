@@ -74,18 +74,18 @@ class PeraturanOrganisasiController  extends Controller
     public function update(Request $request, $id)
     {
         // Validasi input
-        $request->validate([
-            'judul' => 'required',
-            'deskripsi' => 'required',
-        ]);
+        // $request->validate([
+        //     'judul' => 'required',
+        //     'deskripsi' => 'required',
+        // ]);
 
         // Cari peraturan_organisasi berdasarkan ID
         $peraturan_organisasi = PeraturanOrganisasi::findOrFail($id);
 
         // Update data peraturan_organisasi
-        $peraturan_organisasi->judul = $request->judul;
-        $peraturan_organisasi->deskripsi = $request->deskripsi;
-
+        // $peraturan_organisasi->judul = $request->judul;
+        // $peraturan_organisasi->deskripsi = $request->deskripsi;
+        $peraturan_organisasi->text_editor = $request->peraturan;
         $peraturan_organisasi->created_by = 1;
         $peraturan_organisasi->save();
 
