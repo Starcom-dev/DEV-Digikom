@@ -14,13 +14,23 @@ class Usaha extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama_usaha', 'waktu_operational', 'lokasi_usaha', 'nomor_usaha', 'deskripsi', 'user_id', 'image_usaha'];
+    protected $fillable = ['nama_usaha', 'waktu_operational', 'lokasi_usaha', 'nomor_usaha', 'deskripsi', 'user_id', 'image_usaha', 'bidang', 'category'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
     ];
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
 
+    public function bidangUsaha()
+    {
+        return $this->belongsTo(bidangUsaha::class, 'bidang');
+    }
+
+    public function categoryUsaha()
+    {
+        return $this->belongsTo(categoryUsaha::class, 'category');
     }
 }
