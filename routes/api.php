@@ -26,9 +26,11 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranVaController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranQrisController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\API\BidangUsahaController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
+use App\Http\Controllers\API\CategoryUsahaController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
@@ -94,6 +96,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
+
+    Route::resource('/bidang-usaha', BidangUsahaController::class);
+    Route::resource('/category-usaha', CategoryUsahaController::class);
 
     // finpay payment
     Route::post('/finpay', [FinpayController::class, 'bayar']);
