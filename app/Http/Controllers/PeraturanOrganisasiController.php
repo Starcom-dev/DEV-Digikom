@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 //import model product
-use App\Models\PeraturanOrganisasi; 
+use App\Models\PeraturanOrganisasi;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,7 @@ use Illuminate\View\View;
 
 class PeraturanOrganisasiController  extends Controller
 {
-    public function index(Request $request) : View
+    public function index(Request $request): View
     {
         $search = $request->input('search');
         $sortBy = $request->input('sort_by', 'judul'); // Default sort by 'judul'
@@ -23,11 +24,11 @@ class PeraturanOrganisasiController  extends Controller
         $perPage = $request->input('per_page', 10);
         // Query dengan pencarian dan pengurutan
         $peraturan_organisasi = PeraturanOrganisasi::when($search, function ($query, $search) {
-                return $query->where('judul', 'like', "%{$search}%");
-            })
+            return $query->where('judul', 'like', "%{$search}%");
+        })
             ->orderBy($sortBy, $order)
             ->paginate($perPage);
-    
+
         return view('pages.AD_ART.peraturan_organisasi.index', compact('peraturan_organisasi', 'search', 'sortBy', 'order'));
     }
 
@@ -38,28 +39,29 @@ class PeraturanOrganisasiController  extends Controller
         return view('pages.AD_ART.peraturan_organisasi.show', compact('peraturan_organisasi'));
     }
 
-     // Menampilkan form untuk membuat peraturan_organisasi baru
+    // Menampilkan form untuk membuat peraturan_organisasi baru
     public function create()
     {
         return view('pages.AD_ART.peraturan_organisasi.create');
     }
 
-     // Menyimpan peraturan_organisasi baru
+    // Menyimpan peraturan_organisasi baru
     public function store(Request $request)
     {
-         // Validasi input
-        $request->validate([
-            'judul' => 'required|unique:peraturan_organisasis,judul',
-            'deskripsi' => 'required',
-        ]);
+        // Validasi input
+        // $request->validate([
+        //     'judul' => 'required|unique:peraturan_organisasis,judul',
+        //     'deskripsi' => 'required',
+        // ]);
 
-         // Menyimpan data peraturan_organisasi ke database
+        // Menyimpan data peraturan_organisasi ke database
         $peraturan_organisasi = new PeraturanOrganisasi;
-        $peraturan_organisasi->judul = $request->judul;
-        $peraturan_organisasi->deskripsi = $request->deskripsi;
-        $peraturan_organisasi->created_by = Auth::guard('admin')->user()->id; 
+        // $peraturan_organisasi->judul = $request->judul;
+        // $peraturan_organisasi->deskripsi = $request->deskripsi;
+        $peraturan_organisasi->text_editor = $request->peraturan;
+        $peraturan_organisasi->created_by = Auth::guard('admin')->user()->id;
         $peraturan_organisasi->save();
-         // Redirect setelah berhasil menyimpan
+        // Redirect setelah berhasil menyimpan
         return redirect()->route('peraturan-organisasi.index')->with('success', 'Anggaran Dasar berhasil dibuat!');
     }
 
@@ -70,25 +72,25 @@ class PeraturanOrganisasiController  extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    // Validasi input
-    $request->validate([
-        'judul' => 'required',
-        'deskripsi' => 'required',
-    ]);
+    {
+        // Validasi input
+        $request->validate([
+            'judul' => 'required',
+            'deskripsi' => 'required',
+        ]);
 
-    // Cari peraturan_organisasi berdasarkan ID
-    $peraturan_organisasi = PeraturanOrganisasi::findOrFail($id);
+        // Cari peraturan_organisasi berdasarkan ID
+        $peraturan_organisasi = PeraturanOrganisasi::findOrFail($id);
 
-    // Update data peraturan_organisasi
-    $peraturan_organisasi->judul = $request->judul;
-    $peraturan_organisasi->deskripsi = $request->deskripsi;
+        // Update data peraturan_organisasi
+        $peraturan_organisasi->judul = $request->judul;
+        $peraturan_organisasi->deskripsi = $request->deskripsi;
 
-    $peraturan_organisasi->created_by = 1;
-    $peraturan_organisasi->save();
+        $peraturan_organisasi->created_by = 1;
+        $peraturan_organisasi->save();
 
-    return redirect()->route('peraturan-organisasi.index')->with('success', 'Anggaran Dasar berhasil diperbarui!');
-}
+        return redirect()->route('peraturan-organisasi.index')->with('success', 'Anggaran Dasar berhasil diperbarui!');
+    }
 
     public function destroy($id)
     {

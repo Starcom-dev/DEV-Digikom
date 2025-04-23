@@ -14,9 +14,14 @@ class PeraturanOrganisasiController extends Controller
     {
         //get all posts
         // $peraturans = PeraturanOrganisasi::latest()->paginate(5);
-        $peraturans = PeraturanOrganisasi::with('creator')->latest()->get();
+        $peraturans = PeraturanOrganisasi::with('creator')->first();
         //return collection of posts as a resource
-        return new PeraturanOrganisasiResource(true, 'List Data PeraturanOrganisasi', $peraturans);
+        // return new PeraturanOrganisasiResource(true, 'List Data PeraturanOrganisasi', $peraturans);
+        return response()->json([
+            'success' => true,
+            'message' => 'Peraturan organisasi',
+            'data' => $peraturans->text_editor
+        ]);
     }
 
     public function show($id)
@@ -33,7 +38,11 @@ class PeraturanOrganisasiController extends Controller
         }
 
         // Return data peraturan
-        return new PeraturanOrganisasiResource(true, 'Detail Data PeraturanOrganisasi', $peraturan);
+        // return new PeraturanOrganisasiResource(true, 'Detail Data PeraturanOrganisasi', $peraturan);
+        return response()->json([
+            'success' => true,
+            'message' => 'Peraturan organisasi',
+            'data' => $peraturan->text_editor
+        ]);
     }
-
 }

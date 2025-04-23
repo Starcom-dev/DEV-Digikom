@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PrivacyController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/link-storage', function () {
     Artisan::call('storage:link');
@@ -48,7 +49,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/test-log', function () {
     try {
-        \Log::info('Test log entry');
+        Log::info('Test log entry');
         return 'Log successfully written!';
     } catch (\Exception $e) {
         return $e->getMessage();

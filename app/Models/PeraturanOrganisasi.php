@@ -14,7 +14,7 @@ class PeraturanOrganisasi extends Model
      *
      * @var array
      */
-    protected $fillable = ['judul', 'deskripsi', 'created_by'];
+    protected $fillable = ['judul', 'sub_judul', 'deskripsi', 'created_by', 'text_editor'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
     ];
@@ -23,4 +23,3 @@ class PeraturanOrganisasi extends Model
         return $this->belongsTo(Admin::class, 'created_by');
     }
 }
-
