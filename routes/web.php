@@ -4,6 +4,7 @@ use App\Http\Controllers\HtmlController;
 use App\Http\Controllers\IuranController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PrivacyController;
@@ -26,6 +27,13 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/anggaran-dasar', \App\Http\Controllers\AnggaranDasarController::class);
     Route::resource('/anggaran-rumah-tangga', \App\Http\Controllers\AnggaranRumahTanggaController::class);
     Route::resource('/peraturan-organisasi', \App\Http\Controllers\PeraturanOrganisasiController::class);
+
+    Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi'])->name('tentang-organisasi');
+    Route::get('/tentang-organisasi/create', [OrganisasiController::class, 'createTentangOrganisasi'])->name('create-tentang-organisasi');
+    Route::post('/tentang-organisasi/save', [OrganisasiController::class, 'storeTentangOrganisasi'])->name('save-tentang-organisasi');
+    Route::get('/edit-organisasi/{id}', [OrganisasiController::class, 'editTentangOrganisasi'])->name('edit-tentang-organisasi');
+    Route::post('/update-organisasi', [OrganisasiController::class, 'updateTentangOrganisasi'])->name('update-tentang-organisasi');
+
     Route::resource('/jabatan', \App\Http\Controllers\JabatanController::class);
     Route::post('/anggota/toggle-suspend/{id}', [UserController::class, 'toggleSuspend'])->name('anggota.toggleSuspend');
 
