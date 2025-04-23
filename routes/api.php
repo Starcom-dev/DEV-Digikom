@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
 use App\Http\Controllers\API\CategoryUsahaController;
 use App\Http\Controllers\API\JabatanController;
+use App\Http\Controllers\API\OrganisasiController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
@@ -116,7 +117,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
 
-    // Route::get('/tentang-organisasi', )
+    Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi']);
 
     // finpay payment
     Route::post('/finpay', [FinpayController::class, 'bayar']);
