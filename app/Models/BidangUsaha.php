@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BidangUsaha extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+    public $timestamps = true;
     /**
      * fillable
      *
