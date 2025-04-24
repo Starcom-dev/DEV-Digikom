@@ -91,10 +91,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/pengurus/jabatan/{jabatan}', [PengurusController::class, 'search']);
 
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
-    Route::get('/bidang-usaha', BidangUsahaController::class);
-    Route::post('/bidang-usaha', BidangUsahaController::class);
-    Route::get('/category-usaha', CategoryUsahaController::class);
-    Route::post('/category-usaha', CategoryUsahaController::class);
+    Route::get('/bidang-usaha', [BidangUsahaController::class, 'index']);
+    Route::post('/bidang-usaha', [BidangUsahaController::class, 'store']);
+    Route::get('/category-usaha', [CategoryUsahaController::class, 'index']);
+    Route::post('/category-usaha', [CategoryUsahaController::class, 'store']);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
 
     Route::apiResource('/pendidikan', PendidikanController::class);
