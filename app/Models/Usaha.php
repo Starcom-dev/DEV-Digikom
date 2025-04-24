@@ -26,11 +26,11 @@ class Usaha extends Model
 
     public function bidangUsaha()
     {
-        return $this->belongsTo(bidangUsaha::class, 'bidang');
+        return $this->belongsTo(BidangUsaha::class, 'bidang');
     }
 
     public function categoryUsaha()
     {
-        return $this->belongsTo(categoryUsaha::class, 'category');
+        return $this->belongsTo(CategoryUsaha::class, 'category');
     }
 }
