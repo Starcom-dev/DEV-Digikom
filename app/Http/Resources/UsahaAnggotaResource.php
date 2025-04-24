@@ -61,6 +61,8 @@ class UsahaAnggotaResource extends JsonResource
                         ? url('storage/' . $this->resource->image_usaha)
                         : null,
                     'owner' => $this->resource->creator ? $this->resource->creator->full_name : null,
+                    'bidang_usaha' => $this->resource->bidangUsaha->nama,
+                    'category_usaha' => $this->resource->categoryUsaha->nama,
                     'created_at' => $this->resource->created_at,
                 ],
             ];
