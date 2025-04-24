@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\BidangUsahaController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
+use App\Http\Controllers\Api\CategoryUsahaController;
 use App\Http\Controllers\API\JabatanController;
 use App\Http\Controllers\API\OrganisasiController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
@@ -92,6 +93,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
     Route::get('/bidang-usaha', [BidangUsahaController::class, 'index']);
+    Route::post('/bidang-usaha', [BidangUsahaController::class, 'store']);
+    Route::get('/category-usaha', [CategoryUsahaController::class, 'index']);
+    Route::post('/category-usaha', [CategoryUsahaController::class, 'store']);
 
     Route::apiResource('/pendidikan', PendidikanController::class);
 
