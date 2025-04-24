@@ -92,7 +92,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
     Route::apiResource('/bidang-usaha', BidangUsahaController::class);
-    Route::resource('/category-usaha', CategoryUsahaController::class);
+    Route::apiResource('/category-usaha', CategoryUsahaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
 
     Route::apiResource('/pendidikan', PendidikanController::class);
