@@ -7,7 +7,7 @@
 <div class="main-panel">
     <div class="content-wrapper" style="background-color: #D1D1D1;">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="card-title text-black">Tentang Organisasi:</h3>
+            <h3 class="card-title text-black">Peraturan Organisasi:</h3>
         </div>
         @session('success')
             <div class="alert alert-success" role="alert">
@@ -25,7 +25,7 @@
                     <div class="mb-4 text-center">
                         @if ($peraturanOrganisasi == '' || $peraturanOrganisasi == null)
                             <p class="text-muted mt-3">Peraturan organisasi belum di buat.</p>
-                            <a href="{{ route('edit-tentang-organisasi') }}" class="btn btn-sm btn-primary ">Buat
+                            <a href="{{ route('edit-peraturan-organisasi') }}" class="btn btn-sm btn-primary ">Buat
                                 Sekarang</a>
                         @else
                             <textarea id="myeditorinstance">{{{ $peraturanOrganisasi }}}</textarea>
