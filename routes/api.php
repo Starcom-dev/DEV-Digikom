@@ -49,11 +49,14 @@ Route::get('/test-log', function () {
 });
 
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::apiResource('/user', UserController::class);
-    Route::get('/smart-card', [UserController::class, 'smartCard']);
-    Route::post('/user/edit-profile', [UserController::class, 'update']);
+    Route::get('/user', [UserController::class, 'index']);
+    // Route::post('/user/edit-profile', [UserController::class, 'update']);
+    Route::post('/user/edit-profile', [UserController::class, 'editProfile']);
     Route::post('/user/edit-foto-profile', [UserController::class, 'updateFoto']);
-    // ubah agar tidak menggunakan route post
+    Route::get('/user/check-status', [UserController::class, 'checkStatusActive']);
+
+    Route::get('/smart-card', [UserController::class, 'smartCard']);
+
     Route::apiResource('/usaha', UsahaController::class)->middleware(CheckMembership::class);
 
     Route::apiResource('/berita', BeritaController::class)

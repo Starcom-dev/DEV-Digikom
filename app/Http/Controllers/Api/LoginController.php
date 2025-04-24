@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +13,7 @@ class LoginController extends Controller
     {
         // Validasi input
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email',
+            'phone_number'    => 'required',
             'password' => 'required'
         ]);
 
@@ -26,7 +27,7 @@ class LoginController extends Controller
         }
 
         // Kredensial login
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone_number', 'password');
 
         // Jika autentikasi gagal
         if (!$token = JWTAuth::attempt($credentials)) {
@@ -38,12 +39,12 @@ class LoginController extends Controller
 
         // Ambil data user
         $user = auth()->user();
-      
-      	if($user->status == 2){
-          return response()->json([
-          	'success' => false,
-            'message' => 'Akun anda masih dalam proses verifikasi oleh admin'
-          ], 403);
+
+        if ($user->status == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun anda sedang dalam mode suspend'
+            ], 403);
         }
 
         // Tambahkan data user ke dalam token
@@ -59,7 +60,7 @@ class LoginController extends Controller
 
         // Jika autentikasi berhasil
         return response()->json([
-            'success'=> true,
+            'success' => true,
             'message' => 'Login berhasil',
             'token'   => $token
         ], 200);

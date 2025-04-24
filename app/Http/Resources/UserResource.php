@@ -44,11 +44,17 @@ class UserResource extends JsonResource
                 'tempat_lahir' => $this->resource->tempat_lahir ? $this->resource->tempat_lahir : '-',
                 'alamat' => $this->resource->alamat ? $this->resource->alamat : '-',
                 'pekerjaan' => $this->resource->pekerjaan ? $this->resource->pekerjaan : '-',
-              	//'pekerjaan' => $this->resource->pekerjaan ? new PekerjaanResource($this->resource->pekerjaan) : null,
+                //'pekerjaan' => $this->resource->pekerjaan ? new PekerjaanResource($this->resource->pekerjaan) : null,
                 'agama' => $this->resource->agama ? $this->resource->agama : '-',
                 'pendidikan' => $this->resource->pendidikan ? $this->resource->pendidikan : '-',
                 'updated_at' => $this->resource->updated_at,
                 'created_at' => $this->resource->created_at,
+                'is_membership' => $this->resource->is_membership,
+                'membership_start' => $this->resource->membership_start,
+                'membership_end' => $this->resource->membership_end,
+                'nama_referensi_pengurus' => $this->resource->nama_referensi_pengurus,
+                'jabatan_referensi_pengurus' => $this->resource->jabatan_referensi_pengurus,
+                'phone_number_referensi_pengurus' => $this->resource->phone_number_referensi_pengurus,
             ],
         ];
     }
