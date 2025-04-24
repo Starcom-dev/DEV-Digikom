@@ -14,7 +14,7 @@ class BidangUsaha extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'created_at', 'updated_at'];
+    protected $fillable = ['nama'];
     protected $casts = [
         'created_at' => 'datetime', // Pastikan tanggal dikonversi ke objek Carbon
     ];
