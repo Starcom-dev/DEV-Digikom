@@ -9,29 +9,30 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="card-title text-black">Tentang Organisasi:</h3>
         </div>
+        @session('success')
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endsession
+        @if(!$peraturanOrganisasi == '' || !$peraturanOrganisasi == null)
+            <div class="col-12 text-right mb-4">
+                <a href="{{ route('edit-peraturan-organisasi', ['id' => $idOrganisasi]) }}" class="btn btn-sm btn-primary ">Ubah peraturan Organisasi</a>
+            </div>
+        @endif
         <div class="col grid-margin stretch-card">
             <div class="card" style="background-color: #2A2A2A;">
-                @session('success')
-                    <div class="alert alert-success" role="alert">
-                        {{ session('success') }}
-                    </div>
-                @endsession
                 <div class="card-body">
                     <div class="mb-4 text-center">
-                        @if ($tentangOrganisasi == '' || $tentangOrganisasi == null)
-                            <p class="text-muted mt-3">Tentang organisasi belum di buat.</p>
-                            <a href="{{ route('create-tentang-organisasi') }}" class="btn btn-sm btn-primary ">Buat
+                        @if ($peraturanOrganisasi == '' || $peraturanOrganisasi == null)
+                            <p class="text-muted mt-3">Peraturan organisasi belum di buat.</p>
+                            <a href="{{ route('edit-tentang-organisasi') }}" class="btn btn-sm btn-primary ">Buat
                                 Sekarang</a>
                         @else
-                            <div class="col-12 text-right mb-4">
-                                <a href="{{ route('edit-tentang-organisasi', ['id' => $idOrganisasi]) }}" class="btn btn-sm btn-primary ">Ubah Tentang Organisasi</a>
-                            </div>
-                            <textarea id="myeditorinstance">{{{ $tentangOrganisasi }}}</textarea>
+                            <textarea id="myeditorinstance">{{{ $peraturanOrganisasi }}}</textarea>
                         @endif
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- Footer -->

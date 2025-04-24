@@ -26,13 +26,17 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/kegiatan', \App\Http\Controllers\KegiatanController::class);
     Route::resource('/anggaran-dasar', \App\Http\Controllers\AnggaranDasarController::class);
     Route::resource('/anggaran-rumah-tangga', \App\Http\Controllers\AnggaranRumahTanggaController::class);
-    Route::resource('/peraturan-organisasi', \App\Http\Controllers\PeraturanOrganisasiController::class);
+    // Route::resource('/peraturan-organisasi', \App\Http\Controllers\PeraturanOrganisasiController::class);
+
+    // Route::resource('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi'])->name('peraturan-organisasi');
+    Route::get('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi'])->name('peraturan-organisasi');
+    Route::get('/peraturan-organisasi/edit', [OrganisasiController::class, 'createPeraturanOrganisasi'])->name('edit-peraturan-organisasi');
+    Route::post('/peraturan-organisasi/save', [OrganisasiController::class, 'updatePeraturanOrganisasi'])->name('save-peraturan-organisasi');
+
 
     Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi'])->name('tentang-organisasi');
-    Route::get('/tentang-organisasi/create', [OrganisasiController::class, 'createTentangOrganisasi'])->name('create-tentang-organisasi');
-    Route::post('/tentang-organisasi/save', [OrganisasiController::class, 'storeTentangOrganisasi'])->name('save-tentang-organisasi');
-    Route::get('/edit-organisasi/{id}', [OrganisasiController::class, 'editTentangOrganisasi'])->name('edit-tentang-organisasi');
-    Route::post('/update-organisasi', [OrganisasiController::class, 'updateTentangOrganisasi'])->name('update-tentang-organisasi');
+    Route::get('/tentang-organisasi/edit', [OrganisasiController::class, 'createTentangOrganisasi'])->name('edit-tentang-organisasi');
+    Route::post('/tentang-organisasi/save', [OrganisasiController::class, 'updateTentangOrganisasi'])->name('save-tentang-organisasi');
 
     Route::resource('/jabatan', \App\Http\Controllers\JabatanController::class);
     Route::post('/anggota/toggle-suspend/{id}', [UserController::class, 'toggleSuspend'])->name('anggota.toggleSuspend');

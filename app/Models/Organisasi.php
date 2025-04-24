@@ -17,6 +17,7 @@ class Organisasi extends Model
      * @var array
      */
     protected $fillable = [
-        'tentang_organisasi'
+        'tentang_organisasi',
+        'peraturan_organisasi'
     ];
 }

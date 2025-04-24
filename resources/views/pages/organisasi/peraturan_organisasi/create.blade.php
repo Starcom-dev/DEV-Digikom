@@ -5,10 +5,10 @@
 <div class="main-panel">
     <div class="content-wrapper" style="background-color: #D1D1D1;">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="card-title text-black">Buat Tentang Organisasi Baru</h3>
+            <h3 class="card-title text-black">Buat Peraturan Organisasi Baru</h3>
             <div class="mb-3">
-                <button onclick="window.location.href='{{ route('tentang-organisasi') }}'" class="btn btn-primary">
-                    ← Kembali ke Daftar Tentang Organisasi
+                <button onclick="window.location.href='{{ route('peraturan-organisasi') }}'" class="btn btn-primary">
+                    ← Kembali ke Peraturan Organisasi
                 </button>
             </div>
         </div>
@@ -24,13 +24,13 @@
         <div class="col grid-margin stretch-card">
             <div class="card" style="background-color: #2A2A2A;">
                 <div class="card-body">
-                    <form action="{{ route('save-tentang-organisasi') }}" method="POST">
+                    <form action="{{ route('save-peraturan-organisasi') }}" method="POST">
                         @csrf
 
-                        <textarea id="myeditorinstance" name="tentang"></textarea>
+                        <textarea id="myeditorinstance" name="peraturan">{{{ $peraturanOrganisasi }}}</textarea>
 
                         <div class="m-2 float-right">
-                            <button type="submit" class="btn btn-primary">Simpan Tentang Organisasi</button>
+                            <button type="submit" class="btn btn-primary">Simpan Peraturan Organisasi</button>
                         </div>
                     </form>
                 </div>

@@ -143,8 +143,8 @@
                                Dasar</a></li>
                        <li class="nav-item"><a class="nav-link"
                                href="{{ route('anggaran-rumah-tangga.index') }}">Anggaran Rumah Tangga</a></li>
-                       <li class="nav-item"><a class="nav-link"
-                               href="{{ route('peraturan-organisasi.index') }}">Peraturan Organisasi</a></li>
+                       <li class="nav-item"><a class="nav-link" href="{{ route('peraturan-organisasi') }}">Peraturan
+                               Organisasi</a></li>
                        <li class="nav-item"><a class="nav-link" href="{{ route('tentang-organisasi') }}">Tentang
                                Organisasi</a></li>
                    </ul>

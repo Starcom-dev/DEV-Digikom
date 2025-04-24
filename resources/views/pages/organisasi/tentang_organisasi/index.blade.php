@@ -7,24 +7,32 @@
 <div class="main-panel">
     <div class="content-wrapper" style="background-color: #D1D1D1;">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="card-title text-black">Edit Tentang Organisasi:</h3>
+            <h3 class="card-title text-black">Tentang Organisasi:</h3>
         </div>
+        @session('success')
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endsession
+        @if(!$tentangOrganisasi == '' || !$tentangOrganisasi == null)
+            <div class="col-12 text-right mb-4">
+                <a href="{{ route('edit-tentang-organisasi', ['id' => $idOrganisasi]) }}" class="btn btn-sm btn-primary ">Ubah tentang Organisasi</a>
+            </div>
+        @endif
         <div class="col grid-margin stretch-card">
             <div class="card" style="background-color: #2A2A2A;">
                 <div class="card-body">
                     <div class="mb-4 text-center">
-                        <form action="{{ route('update-tentang-organisasi') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$organisasi->id}}">
-                            <textarea id="myeditorinstance" name="tentang">{{{ $organisasi->tentang_organisasi }}}</textarea>
-                            <div class="col-12 text-center mt-4">
-                                <button type="submit" class="btn btn-sm btn-primary ">Simpan Perubahan</button>
-                            </div>
-                        </form>
+                        @if ($tentangOrganisasi == '' || $tentangOrganisasi == null)
+                            <p class="text-muted mt-3">Tentang organisasi belum di buat.</p>
+                            <a href="{{ route('edit-tentang-organisasi') }}" class="btn btn-sm btn-primary ">Buat
+                                Sekarang</a>
+                        @else
+                            <textarea id="myeditorinstance">{{{ $tentangOrganisasi }}}</textarea>
+                        @endif
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- Footer -->
@@ -40,6 +48,7 @@
     referrerpolicy="origin"></script>
 <script>
     tinymce.init({
+        readonly: true,
         selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
 
         // plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons accordion markdown math importword exportword exportpdf',
