@@ -91,7 +91,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/pengurus/jabatan/{jabatan}', [PengurusController::class, 'search']);
 
     Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
-    Route::resource('/bidang-usaha', BidangUsahaController::class);
+    Route::apiResource('/bidang-usaha', BidangUsahaController::class);
     Route::resource('/category-usaha', CategoryUsahaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
 
