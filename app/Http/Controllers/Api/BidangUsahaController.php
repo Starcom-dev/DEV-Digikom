@@ -14,6 +14,7 @@ class BidangUsahaController extends Controller
      */
     public function index()
     {
+        dd('woy');
         $bidangUsaha = BidangUsaha::orderBy('nama', 'ASC')->get();
         return new BidangUsahaResource(true, 'List Data Bidang Usaha', $bidangUsaha);
     }
