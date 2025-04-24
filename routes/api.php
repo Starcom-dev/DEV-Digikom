@@ -90,7 +90,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::apiResource('/pengurus', PengurusController::class);
     Route::get('/pengurus/jabatan/{jabatan}', [PengurusController::class, 'search']);
 
-    // Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
+    Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
     Route::get('/bidang-usaha', [BidangUsahaController::class, 'index']);
     Route::post('/bidang-usaha', [BidangUsahaController::class, 'store']);
