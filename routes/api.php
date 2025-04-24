@@ -103,7 +103,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::apiResource('/pekerjaan', PekerjaanController::class);
 
-    // Route::apiResource('/tagihan', TagihanController::class);
+    Route::apiResource('/tagihan', TagihanController::class);
 
     Route::apiResource('/opsi-bayar', OpsiBayarController::class);
 
