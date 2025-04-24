@@ -26,7 +26,7 @@ use App\Http\Controllers\Api\Pembayaran\PembayaranVaController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranQrisController;
 use App\Http\Controllers\Api\Pembayaran\PembayaranCardController;
 use App\Http\Controllers\Api\BannerController;
-use App\Http\Controllers\API\BidangUsahaController;
+use App\Http\Controllers\Api\BidangUsahaController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackEwalletController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
