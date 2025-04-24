@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Organisasi;
@@ -23,6 +23,16 @@ class OrganisasiController extends Controller
             'success' => true,
             'message' => 'Tentang organisasi',
             'data' => $organisasi->tentang_organisasi
+        ]);
+    }
+
+    public function peraturanOrganisasi()
+    {
+        $organisasi = Organisasi::first();
+        return response()->json([
+            'success' => true,
+            'message' => 'Peraturan organisasi',
+            'data' => $organisasi->peraturan_organisasi
         ]);
     }
 

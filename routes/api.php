@@ -11,7 +11,6 @@ use App\Http\Controllers\Api\KegiatanController;
 use App\Http\Controllers\Api\IuranController;
 use App\Http\Controllers\Api\AnggaranDasarController;
 use App\Http\Controllers\Api\AnggaranRumahTanggaController;
-use App\Http\Controllers\Api\PeraturanOrganisasiController;
 use App\Http\Controllers\Api\PengurusController;
 use App\Http\Controllers\Api\UsahaAnggotaController;
 use App\Http\Controllers\Api\PendidikanController;
@@ -32,7 +31,7 @@ use App\Http\Controllers\Api\CallbackPayment\CallbackQrisController;
 use App\Http\Controllers\Api\CallbackPayment\CallbackVaController;
 use App\Http\Controllers\Api\CategoryUsahaController;
 use App\Http\Controllers\API\JabatanController;
-use App\Http\Controllers\API\OrganisasiController;
+use App\Http\Controllers\Api\OrganisasiController;
 use App\Http\Controllers\Api\Pembayaran\FinpayController;
 use App\Http\Middleware\CheckMembership;
 use Illuminate\Support\Facades\Artisan;
@@ -83,14 +82,12 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class)->middleware(CheckMembership::class);
 
-    Route::apiResource('/peraturan-organisasi', PeraturanOrganisasiController::class);
-
     Route::apiResource('/jabatan', JabatanController::class);
 
     Route::apiResource('/pengurus', PengurusController::class);
     Route::get('/pengurus/jabatan/{jabatan}', [PengurusController::class, 'search']);
 
-    Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
+    // Route::apiResource('/usaha-anggota', UsahaAnggotaController::class);
     Route::get('/my-usaha', [UsahaAnggotaController::class, 'myUsaha']);
     Route::get('/bidang-usaha', [BidangUsahaController::class, 'index']);
     Route::post('/bidang-usaha', [BidangUsahaController::class, 'store']);
@@ -120,6 +117,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
 
     Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi']);
+    Route::get('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi']);
 
     // finpay payment
     Route::post('/finpay', [FinpayController::class, 'bayar']);
