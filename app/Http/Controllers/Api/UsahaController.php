@@ -48,7 +48,7 @@ class UsahaController extends Controller
                 'lokasi_usaha' => 'required|max:255',
                 'nomor_usaha' => 'nullable|integer',
                 'deskripsi' => 'required|string',
-                'image_usaha' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'image_usaha' => 'required|image|mimes:jpeg,png,jpg|max:10048',
                 'category' => 'required',
                 'bidang' => 'required',
             ]);
