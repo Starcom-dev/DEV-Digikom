@@ -41,7 +41,7 @@ class PembayaranEwalletController extends Controller
                 "amount" => $nominal + $adminFee,
                 "checkout_method" => "ONE_TIME_PAYMENT",
                 "channel_code" => $validated['metode_pembayaran'],
-                "channel_properties" => $this->generateChannelProperties($validated),
+                "channel_properties" => $this->generateChannelProperties($validated, $id_transaksi),
                 "metadata" => [
                     "branch_area" => "PLUIT",
                     "branch_city" => "JAKARTA"
@@ -149,7 +149,7 @@ class PembayaranEwalletController extends Controller
         }
     }
 
-    private function generateChannelProperties(array $data): array
+    private function generateChannelProperties(array $data, $id_transaksi): array
     {
         if ($data['metode_pembayaran'] === 'ID_OVO') {
             if (empty($data['no_hp'])) {
@@ -164,7 +164,8 @@ class PembayaranEwalletController extends Controller
         }
 
         return [
-            'success_redirect_url' => config('app.url'),
+            // 'success_redirect_url' => config('app.url'),
+            'success_redirect_url' => 'digicom://detail-bayar-iuran/' . $id_transaksi,
         ];
     }
 
