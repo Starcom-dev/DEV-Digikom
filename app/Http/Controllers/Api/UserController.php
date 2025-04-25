@@ -162,10 +162,10 @@ class UserController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::channel('single')->error('Error validasi update profile', $e->errors());
+            $firstErrorMessage = collect($e->errors())->first()[0];
             return response()->json([
                 'success' => false,
-                'message' => 'Validasi gagal',
-                'errors' => $e->errors(),
+                'message' => $firstErrorMessage,
             ], 422);
         } catch (\Throwable $th) {
             Log::channel('single')->error('Terjadi kesalahan saat update profile' . $th->getMessage());
