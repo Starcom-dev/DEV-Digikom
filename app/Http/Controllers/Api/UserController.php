@@ -119,7 +119,7 @@ class UserController extends Controller
                 'password' => $request->password ? Hash::make($request->password) : $user->password,
                 'nomor_ktp' => $request->nomor_ktp ?? $user->nomor_ktp,
                 'ktp_picture' => $user->ktp_picture,
-                'profile_picture' => $user->profile_picture, // default jika tidak ada file baru
+                // 'profile_picture' => $user->profile_picture,
                 'tanggal_lahir' => $request->tanggal_lahir ?? $user->tanggal_lahir,
                 'tempat_lahir' => $request->tempat_lahir ?? $user->tempat_lahir,
                 'alamat' => $request->alamat ?? $user->alamat,
