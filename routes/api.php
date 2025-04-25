@@ -118,6 +118,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('transactions/{id}', [TransactionController::class, 'show']);
 
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
+    Route::post('/banner', [BannerController::class, 'store'])->middleware(CheckMembership::class);
 
     Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi']);
     Route::get('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi']);

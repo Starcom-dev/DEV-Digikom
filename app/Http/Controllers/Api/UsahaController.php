@@ -7,6 +7,7 @@ use App\Http\Resources\UsahaAnggotaResource;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Usaha;
+use Illuminate\Support\Facades\Log;
 
 class UsahaController extends Controller
 {
@@ -72,6 +73,7 @@ class UsahaController extends Controller
 
             return new UsahaAnggotaResource(true, 'Usaha created successfully', $usaha);
         } catch (\Exception $e) {
+            Log::channel('single')->info('Error API create usaha : ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create usaha',
