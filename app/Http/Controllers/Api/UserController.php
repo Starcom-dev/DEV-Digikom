@@ -69,7 +69,6 @@ class UserController extends Controller
 
     public function editProfile(Request $request)
     {
-        Log::channel('single')->info('Request parameter update profile' . $request);
         try {
             $JWTGetUser = JWTAuth::parseToken()->authenticate();
             $user = User::findOrFail($JWTGetUser->id);
