@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\BeritaResource;
 use App\Models\Berita;
+use Illuminate\Support\Facades\Log;
 
 class BeritaController extends Controller
 {
@@ -37,35 +38,33 @@ class BeritaController extends Controller
     }
 
     public function search(Request $request)
-{
-    $request->validate([
-        'query' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'query' => 'required|string',
+        ]);
 
-    $query = $request->input('query');
-    \Log::info('Pencarian query: ' . $query);
+        $query = $request->input('query');
+        Log::channel('single')->info('Pencarian query: ' . $query);
 
-    $beritas = Berita::
-        whereRaw('LOWER(tittle) LIKE ?', ['%' . strtolower($query) . '%'])
-        ->orWhereRaw('LOWER(content) LIKE ?', ['%' . strtolower($query) . '%'])
-        ->latest()
-        ->get();
+        $beritas = Berita::whereRaw('LOWER(tittle) LIKE ?', ['%' . strtolower($query) . '%'])
+            ->orWhereRaw('LOWER(content) LIKE ?', ['%' . strtolower($query) . '%'])
+            ->latest()
+            ->get();
 
-    // Debugging hasil query
-    \Log::info('Beritas:', $beritas->toArray());
+        // Debugging hasil query
+        Log::channel('single')->info('Beritas:', $beritas->toArray());
 
-    if ($beritas->isEmpty()) {
+        if ($beritas->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Berita tidak ditemukan s',
+            ], 404);
+        }
+
         return response()->json([
-            'success' => false,
-            'message' => 'Berita tidak ditemukan',
-        ], 404);
+            'success' => true,
+            'message' => 'Hasil Pencarian Berita',
+            'data' => $beritas,
+        ]);
     }
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Hasil Pencarian Berita',
-        'data' => $beritas,
-    ]);
-}
-
 }

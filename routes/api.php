@@ -69,8 +69,8 @@ Route::middleware(['jwt.auth'])->group(function () {
             'show' => 'berita.show',
             'update' => 'berita.update',
             'destroy' => 'berita.destroy',
-            'search' => 'berita.search',
         ]);
+    Route::get('/search-berita', [BeritaController::class, 'search'])->name('berita.search');
 
     Route::apiResource('/kegiatan', KegiatanController::class)->middleware(CheckMembership::class);
 
