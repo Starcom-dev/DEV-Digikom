@@ -59,6 +59,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/user/edit-profile', [UserController::class, 'editProfile']);
     Route::post('/user/edit-foto-profile', [UserController::class, 'updateFoto']);
     Route::get('/user/check-status', [UserController::class, 'checkStatusActive']);
+    Route::post('/user/reset-password', [UserController::class, 'resetPassword']);
 
     Route::get('/smart-card', [UserController::class, 'smartCard']);
     Route::get('/syarat-ketentuan-anggota', [UserController::class, 'syaratKetentuanAnggota']);

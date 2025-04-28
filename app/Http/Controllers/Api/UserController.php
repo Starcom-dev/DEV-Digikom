@@ -349,4 +349,49 @@ class UserController extends Controller
         $image->save($path, $newQuality);
         return $folder . '/' . $filename;
     }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $request->validate([
+                'password_lama' => 'required',
+                'password_baru' => 'required',
+                'password_konfirmasi' => 'required',
+            ]);
+            // cek apakah input password lama sesuai dengan password sekarang
+            if (!Hash::check($request->password_lama, $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Password lama tidak sesuai',
+                ], 400);
+            }
+            // cek apakah password baru == password konfirmasi
+            if ($request->password_baru != $request->password_konfirmasi) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Konfirmasi password tidak sesuai',
+                ], 400);
+            }
+            $user->password = Hash::make($request->password_baru);
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Password berhasil diubah',
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::channel('single')->info('Error validation reset password');
+            $firstErrorMessage = collect($e->errors())->first()[0];
+            return response()->json([
+                'success' => false,
+                'message' => $firstErrorMessage,
+            ], 422);
+        } catch (\Exception $e) {
+            Log::channel('single')->info('Error reset password user : ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Server Error'
+            ]);
+        }
+    }
 }
