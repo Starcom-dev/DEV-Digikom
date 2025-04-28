@@ -57,7 +57,7 @@ class BeritaController extends Controller
         if ($beritas->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Berita tidak ditemukan s',
+                'message' => 'Berita tidak ditemukan',
             ], 404);
         }
 
