@@ -20,11 +20,35 @@ class BeritaController extends Controller
         return new BeritaResource(true, 'List Data Berita', $beritas);
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         // Mencari berita berdasarkan ID
-        $berita = Berita::with('creator')->find($id);
+        if ($id === 'search') {
+            $query = $request->query('query');
+            Log::channel('single')->info('Pencarian query: ' . $query);
 
+            $beritas = Berita::whereRaw('LOWER(tittle) LIKE ?', ['%' . strtolower($query) . '%'])
+                ->orWhereRaw('LOWER(content) LIKE ?', ['%' . strtolower($query) . '%'])
+                ->latest()
+                ->get();
+
+            // Debugging hasil query
+            Log::channel('single')->info('Beritas:', $beritas->toArray());
+
+            if ($beritas->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Berita tidak ditemukans',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hasil Pencarian Berita',
+                'data' => $beritas,
+            ]);
+        }
+        $berita = Berita::with('creator')->find($id);
         // Jika berita tidak ditemukan, return response error
         if (!$berita) {
             return response()->json([
@@ -37,34 +61,30 @@ class BeritaController extends Controller
         return new BeritaResource(true, 'Detail Data Berita', $berita);
     }
 
-    public function search(Request $request)
-    {
-        $request->validate([
-            'query' => 'required|string',
-        ]);
+    // public function search($query)
+    // {
 
-        $query = $request->input('query');
-        Log::channel('single')->info('Pencarian query: ' . $query);
+    //     Log::channel('single')->info('Pencarian query: ' . $query);
 
-        $beritas = Berita::whereRaw('LOWER(tittle) LIKE ?', ['%' . strtolower($query) . '%'])
-            ->orWhereRaw('LOWER(content) LIKE ?', ['%' . strtolower($query) . '%'])
-            ->latest()
-            ->get();
+    //     $beritas = Berita::whereRaw('LOWER(tittle) LIKE ?', ['%' . strtolower($query) . '%'])
+    //         ->orWhereRaw('LOWER(content) LIKE ?', ['%' . strtolower($query) . '%'])
+    //         ->latest()
+    //         ->get();
 
-        // Debugging hasil query
-        Log::channel('single')->info('Beritas:', $beritas->toArray());
+    //     // Debugging hasil query
+    //     Log::channel('single')->info('Beritas:', $beritas->toArray());
 
-        if ($beritas->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Berita tidak ditemukan',
-            ], 404);
-        }
+    //     if ($beritas->isEmpty()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Berita tidak ditemukans',
+    //         ], 404);
+    //     }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Hasil Pencarian Berita',
-            'data' => $beritas,
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Hasil Pencarian Berita',
+    //         'data' => $beritas,
+    //     ]);
+    // }
 }
