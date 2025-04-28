@@ -22,34 +22,57 @@
         <div class="col grid-margin stretch-card">
             <div class="card" style="background-color: #2A2A2A;">
                 <div class="card-body">
-                    <div class="mb-4">
-                        <form action="{{ route('iuran.tagihan') }}" method="GET" class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <select name="year" class="form-control text-white" onchange="this.form.submit()">
-                                    <option value="" style>-- Select Year --</option>
-                                    <option value="2023" {{ request('year') == '2023' ? 'selected' : '' }}>2023</option>
-                                    <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>2024</option>
-                                </select>
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="{{ route('iuran.tagihan') }}" method="GET" class="d-flex">
 
-                                <select name="month" class="form-control ml-2 text-white" onchange="this.form.submit()">
-                                    <option value="">-- Select Month --</option>
-                                    @foreach(range(1, 12) as $month)
-                                        <option value="{{ $month }}" {{ request('month') == $month ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($month)->format('F') }}</option>
-                                    @endforeach
-                                </select>
-
-                                <select name="user_id" class="form-control ml-2 text-white" onchange="this.form.submit()">
-                                    <option value="">-- Select User --</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>{{ $user->full_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </form>
+                                <div class="p-2">
+                                    <select name="year" class="form-control text-white">
+                                        <option value="" style>-- Select Year --</option>
+                                        @foreach (['2023', '2024', '2025', '2026', '2027'] as $year)
+                                            <option value="{{ $year }}"
+                                                {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}
+                                            </option>
+                                        @endforeach
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="p-2">
+                                    <select name="month" class="form-control ml-2 text-white">
+                                        <option value="">-- Select Month --</option>
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}"
+                                                {{ request('month') == $month ? 'selected' : '' }}>
+                                                {{ \Carbon\Carbon::create()->month($month)->format('F') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="p-2">
+                                    <select name="user_id" class="form-control ml-2 text-white">
+                                        <option value="">-- Select User --</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}"
+                                                {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                                {{ $user->full_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="p-2 d-flex align-items-center justify-content-center">
+                                    <button type="submit" class="btn btn-sm btn-primary">Lihat Iuran</button>
+                                </div>
+                                <div class="p-2 d-flex align-items-center justify-content-end flex-grow-1">
+                                    <a href="{{ route('iuran.print') }}" class="btn btn-sm btn-primary float-right">
+                                        <span class="menu-icon">
+                                            <i class="mdi mdi-printer"></i>
+                                        </span>
+                                        Print Iuran
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-
                     <!-- Hanya tampilkan tabel jika ada pencarian -->
-                    @if(request()->has('year') || request()->has('month') || request()->has('user_id'))
+                    @if (request()->has('year') || request()->has('month') || request()->has('user_id'))
                         @if ($iuran->count())
                             <table class="table table-hover text-white">
                                 <thead>
@@ -66,7 +89,8 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($iuran as $item)
-                                        <tr onclick="location.href='{{ route('tagihan.show', $item->id) }}'" style="cursor: pointer;">
+                                        <tr onclick="location.href='{{ route('tagihan.show', $item->id) }}'"
+                                            style="cursor: pointer;">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->users->phone_number }}</td>
                                             <td>{{ $item->users->full_name }}</td>
@@ -75,7 +99,8 @@
                                             <td>{{ $item->iuran->tahun }}</td>
                                             <td>{{ $item->status }}</td>
                                             <td>
-                                                <a href="{{ route('tagihan.show', $item->id) }}" class="btn btn-sm btn-warning">Detail</a>
+                                                <a href="{{ route('tagihan.show', $item->id) }}"
+                                                    class="btn btn-sm btn-warning">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -92,7 +117,7 @@
         </div>
 
         <!-- Pagination -->
-        @if(request()->has('year') || request()->has('month') || request()->has('user_id'))
+        @if (request()->has('year') || request()->has('month') || request()->has('user_id'))
             <div class="d-flex justify-content-center mt-4">
                 {{ $iuran->links('pagination::bootstrap-4') }}
             </div>

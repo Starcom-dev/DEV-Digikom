@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Iuran;
 use App\Models\User;
 use App\Models\Tagihan; // Pastikan model Tagihan diimpor
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class IuranController extends Controller
@@ -144,54 +146,24 @@ class IuranController extends Controller
 
     public function laporanIuran(Request $request)
     {
+        if (Session::get('session_iuran')) {
+            Session::forget('session_iuran');
+        }
+
         $search = $request->input('search');
         $year = $request->input('year');
         $month = $request->input('month');
         $userId = $request->input('user_id');
-        $sortBy = $request->input('sort_by', 'created_at');  // Change to 'created_at' or another column
+        $sortBy = $request->input('sort_by', 'created_at');
         $order = $request->input('order', 'asc');
         $perPage = $request->input('per_page', 10);
 
-        // Build the query
-        $iuran = Tagihan::query();
-
-        if ($search) {
-            $iuran->where('tahun', 'like', "%{$search}%")
-                ->orWhere('jumlah', 'like', "%{$search}%")
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('full_name', 'like', "%{$search}%");
-                });
-        }
-
-        if ($year) {
-            $iuran->where('tahun', $year);
-        }
-
-        if ($month) {
-            $iuran->whereMonth('created_at', $month);
-        }
-
-        if ($userId) {
-            $iuran->where('user_id', $userId);
-        }
-
-        // Sort by the selected column (either 'created_at' or 'tahun' if it exists)
-        // Pada query laporanIuran
-        // Menggunakan eager loading untuk mengoptimalkan performa
-        $iuran = Tagihan::with('iuran') // Pastikan relasi iuran sudah didefinisikan
-            ->when($search, function ($query) use ($search) {
-                $query->where('jumlah', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($query) use ($search) {
-                        $query->where('full_name', 'like', "%{$search}%");
-                    });
-            })
+        $iuran = Tagihan::with('iuran')
             ->when($year, function ($query) use ($year) {
-                $query->whereHas('iuran', function ($query) use ($year) {
-                    $query->where('tahun', $year);
-                });
+                $query->whereYear('tanggal_bayar', $year);
             })
             ->when($month, function ($query) use ($month) {
-                $query->whereMonth('created_at', $month);
+                $query->whereMonth('tanggal_bayar', $month);
             })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
@@ -199,11 +171,29 @@ class IuranController extends Controller
             ->orderBy($sortBy, $order)
             ->paginate($perPage);
 
+        Session::put('session_iuran', [
+            'data' => $iuran->items(),
+            'tahun' => $year,
+            'bulan' => $month
+        ]);
 
-        // Pass the users for the filter dropdown
         $users = User::all();
 
         return view('pages.iuran.laporan', compact('iuran', 'users', 'search', 'year', 'month', 'userId'));
+    }
+
+
+    public function printIuran()
+    {
+        $dataIuran = Session::get('session_iuran');
+        if (!$dataIuran) {
+            return redirect()->route('iuran.index')->with('error', 'Data Iuran tidak ditemukan di session.');
+        }
+        $data = $dataIuran['data'];
+        $bulan = (int) $dataIuran['bulan'];
+        $tahun = $dataIuran['tahun'];
+        $pdf = Pdf::loadView('pages.iuran.cetak', compact('data', 'tahun', 'bulan'));
+        return $pdf->download('laporan_iuran.pdf');
     }
 
     public function showTagihan($id)

@@ -48,6 +48,8 @@ Route::get('/test-log', function () {
     return response()->json(['message' => 'Log written!']);
 });
 
+Route::get('/auth/reset-password', [UserController::class, 'resetPassword']);
+
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/user', [UserController::class, 'index']);
     // Route::post('/user/edit-profile', [UserController::class, 'update']);

@@ -18,10 +18,8 @@ Route::get('/link-storage', function () {
 
 Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/', \App\Http\Controllers\IndexController::class);
-    Route::resource('/iuran', \App\Http\Controllers\IuranController::class);
     Route::get('/tagihan/{id}', [IuranController::class, 'showTagihan'])->name('tagihan.show');
 
-    Route::get('/laporan-iuran', [IuranController::class, 'laporanIuran'])->name('iuran.tagihan');
     Route::resource('/berita', \App\Http\Controllers\BeritaController::class);
     Route::resource('/kegiatan', \App\Http\Controllers\KegiatanController::class);
     Route::resource('/anggaran-dasar', \App\Http\Controllers\AnggaranDasarController::class);
@@ -48,6 +46,10 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::resource('/pengurus', \App\Http\Controllers\PengurusController::class);
     Route::resource('/usaha', \App\Http\Controllers\UsahaController::class);
+
+    Route::resource('/iuran', \App\Http\Controllers\IuranController::class);
+    Route::get('/laporan-iuran', [IuranController::class, 'laporanIuran'])->name('iuran.tagihan');
+    Route::get('/print-iuran', [IuranController::class, 'printIuran'])->name('iuran.print');
     Route::get('/iuran/{id}/enroll', [IuranController::class, 'enrollTagihan'])->name('iuran.enroll');
 
     Route::resource('/banner', \App\Http\Controllers\BannerController::class);

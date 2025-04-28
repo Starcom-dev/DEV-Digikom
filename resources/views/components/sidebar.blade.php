@@ -89,7 +89,7 @@
                            <a class="nav-link" href="{{ route('iuran.index') }}">Setup Iuran</a>
                        </li>
                        <li class="nav-item">
-                           <a class="nav-link" href="{{ route('iuran.tagihan') }}">LaporanIuran</a>
+                           <a class="nav-link" href="{{ route('iuran.tagihan') }}">Laporan Iuran</a>
                        </li>
                    </ul>
                </div>

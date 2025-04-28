@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Exceptions\Renderer\Exception;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Mail\SendEmail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
@@ -331,5 +333,28 @@ class UserController extends Controller
         // Simpan gambar yang sudah dikompresi
         $image->save($path, $newQuality);
         return $folder . '/' . $filename;
+    }
+
+    public function resetPassword()
+    {
+        try {
+            $data = [
+                'subject' => 'Testing Kirim Email',
+                'title' => 'Testing Kirim Email',
+                'body' => 'Ini adalah email uji coba dari Tutorial Laravel: Send Email Via SMTP GMAIL @ qadrLabs.com'
+            ];
+
+            Mail::to('sanusiii1512@gmail.com')->send(new SendEmail($data));
+            return response()->json([
+                'success' => true,
+                'message' => 'Email berhasil dikirim'
+            ]);
+        } catch (\Exception $e) {
+            Log::channel('single')->info('Email gagal dikirim : ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Email gagal dikirim'
+            ]);
+        }
     }
 }
