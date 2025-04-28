@@ -16,6 +16,10 @@ Route::get('/link-storage', function () {
     return 'Storage linked successfully!';
 });
 
+Route::get('/auth/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('reset-password');
+Route::post('/auth/reset-password', [AuthController::class, 'saveResetPassword'])->name('reset-password');
+Route::get('/auth/reset-password-success', [AuthController::class, 'successResetPassword'])->name('reset-password-success');
+
 Route::middleware(['auth:admin'])->group(function () {
     Route::resource('/', \App\Http\Controllers\IndexController::class);
     Route::get('/tagihan/{id}', [IuranController::class, 'showTagihan'])->name('tagihan.show');

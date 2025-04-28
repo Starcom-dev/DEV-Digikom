@@ -33,7 +33,7 @@ class LoginController extends Controller
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email atau password salah'
+                'message' => 'No HP atau password salah'
             ], 401);
         }
 

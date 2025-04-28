@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\PengurusController;
 use App\Http\Controllers\Api\UsahaAnggotaController;
 use App\Http\Controllers\Api\PendidikanController;
 use App\Http\Controllers\Api\AgamaController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PekerjaanController;
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\LoginController;
@@ -48,7 +49,9 @@ Route::get('/test-log', function () {
     return response()->json(['message' => 'Log written!']);
 });
 
-Route::get('/auth/reset-password', [UserController::class, 'resetPassword']);
+Route::post('/auth/send-email', [AuthController::class, 'sendEmail']);
+// Route::get('/auth/reset-password/{token}', [AuthController::class, 'resetPassword']);
+// Route::post('/auth/reset-password', [AuthController::class, 'saveResetPassword']);
 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/user', [UserController::class, 'index']);
