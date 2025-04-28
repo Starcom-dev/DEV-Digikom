@@ -199,6 +199,23 @@ class UserController extends Controller
         }
     }
 
+    public function syaratKetentuanAnggota()
+    {
+        $txt = "<p><b>Syarat & Ketentuan Kartu Anggota</b></p>";
+        $txt .= "<p>1. Kartu ini merupakan tangda pengenal anggota organisasi</p>";
+        $txt .= "<p>2. Kartu ini dilengkapi dengan Chip RFID</p>";
+        $txt .= "<p>3. Kartu ini memiliki fitur pembayaran yang dapat digunakan di merchent anggota yang telah bekerjasama dengan Global Pay</p>";
+        $txt .= "<p>4. Kartu ini aman bila difungsikan sebagai alat pembayaran karena menggunakan PIN</p>";
+        $txt .= "<p>5. Kartu ini aman tidak menyimpan data apapun selain alamat chip kartu</p>";
+        $txt .= "<p>6. Bila kartu ini hilang silahkan hubungi pengurus organisasi agar segera di blokir. Hal ini menghindari penyalahgunaan oleh pihak lain yang tidak bertanggung jawab</p>";
+        $txt .= "<p>7. Kartu ini hanya dapat digunakan oleh anggota dengan status keanggotaan aktif. Jika masa keanggotaan talh berakhir (expired), maka kartu tidak dapat digunakan sampai anggota tersebut membayar iuran yang telah ditentukan oleh organisasi</p>";
+
+        return response()->json([
+            'success' => true,
+            'data' => $txt
+        ], 200);
+    }
+
     public function update(Request $request)
     {
         // Validasi input

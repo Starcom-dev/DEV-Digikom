@@ -61,6 +61,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/user/check-status', [UserController::class, 'checkStatusActive']);
 
     Route::get('/smart-card', [UserController::class, 'smartCard']);
+    Route::get('/syarat-ketentuan-anggota', [UserController::class, 'syaratKetentuanAnggota']);
 
     Route::apiResource('/usaha', UsahaController::class)->middleware(CheckMembership::class);
 
