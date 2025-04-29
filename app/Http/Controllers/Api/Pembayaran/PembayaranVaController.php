@@ -18,7 +18,7 @@ class PembayaranVaController extends Controller
             // Validasi input
             $validated = $request->validate([
                 'iuran_id' => 'required|integer', // 'nominal' => 'required|numeric|min:1',
-                'metode_pembayaran' => 'required|string|in:BNI,MANDIRI,BRI', // misalnya, sesuaikan dengan bank yang Anda dukung
+                'metode_pembayaran' => 'required|string|in:BNI,MANDIRI,BRI,PERMATA,SAHABAT_SAMPOERNA', // misalnya, sesuaikan dengan bank yang Anda dukung
                 'no_hp' => 'nullable|string',
                 'keterangan' => 'nullable|string|max:255',
             ]);
