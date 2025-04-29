@@ -59,6 +59,13 @@ class RegisterController extends Controller
             // ]);
 
             return response()->json(new UserResource(true, 'User Registered Successfully', $user), 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::channel('single')->info('Error validation reset password');
+            $firstErrorMessage = collect($e->errors())->first()[0];
+            return response()->json([
+                'success' => false,
+                'message' => $firstErrorMessage,
+            ], 422);
         } catch (\Exception $e) {
             Log::channel('single')->info('Error register' . $e->getMessage());
             return response()->json([
