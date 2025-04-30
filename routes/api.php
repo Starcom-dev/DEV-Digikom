@@ -88,9 +88,8 @@ Route::middleware(['jwt.auth'])->group(function () {
             'destroy' => 'iuran_custom.destroy',
         ]);
 
-    Route::apiResource('/anggaran-dasar', AnggaranDasarController::class)->middleware(CheckMembership::class);
-
-    Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class)->middleware(CheckMembership::class);
+    // Route::apiResource('/anggaran-dasar', AnggaranDasarController::class)->middleware(CheckMembership::class);
+    // Route::apiResource('/anggaran-rumah-tangga', AnggaranRumahTanggaController::class)->middleware(CheckMembership::class);
 
     Route::apiResource('/jabatan', JabatanController::class);
 
@@ -127,6 +126,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/banner', [BannerController::class, 'index'])->middleware(CheckMembership::class);
     Route::post('/banner', [BannerController::class, 'store'])->middleware(CheckMembership::class);
 
+    Route::get('/anggaran-dasar', [OrganisasiController::class, 'anggaranDasar']);
+    Route::get('/anggaran-rumah-tangga', [OrganisasiController::class, 'anggaranRumahTangga']);
     Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi']);
     Route::get('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi']);
 

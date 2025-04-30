@@ -16,6 +16,26 @@ class OrganisasiController extends Controller
         //
     }
 
+    public function anggaranDasar()
+    {
+        $organisasi = Organisasi::first();
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggaran Dasar',
+            'data' => $organisasi->anggaran_dasar
+        ]);
+    }
+
+    public function anggaranRumahTangga()
+    {
+        $organisasi = Organisasi::first();
+        return response()->json([
+            'success' => true,
+            'message' => 'Anggaran Rumah Tangga',
+            'data' => $organisasi->anggaran_rumah_tangga
+        ]);
+    }
+
     public function tentangOrganisasi()
     {
         $organisasi = Organisasi::first();
