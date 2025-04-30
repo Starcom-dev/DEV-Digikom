@@ -31,10 +31,18 @@ Route::middleware(['auth:admin'])->group(function () {
     // Route::resource('/peraturan-organisasi', \App\Http\Controllers\PeraturanOrganisasiController::class);
 
     // Route::resource('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi'])->name('peraturan-organisasi');
+
+    Route::get('/anggaran-dasar', [OrganisasiController::class, 'anggaranDasar'])->name('anggaran-dasar');
+    Route::get('/edit-anggaran-dasar', [OrganisasiController::class, 'createAnggaranDasar'])->name('edit-anggaran-dasar');
+    Route::post('/save-anggaran-dasar', [OrganisasiController::class, 'updateAnggaranDasar'])->name('save-anggaran-dasar');
+
+    Route::get('/anggaran-rumah-tangga', [OrganisasiController::class, 'anggaranRumahTangga'])->name('anggaran-rumah-tangga');
+    Route::get('/edit-anggaran-rumah-tangga', [OrganisasiController::class, 'createAnggaranRumahTangga'])->name('edit-anggaran-rumah-tangga');
+    Route::post('/save-anggaran-rumah-tangga', [OrganisasiController::class, 'updateAnggaranRumahTangga'])->name('save-anggaran-rumah-tangga');
+
     Route::get('/peraturan-organisasi', [OrganisasiController::class, 'peraturanOrganisasi'])->name('peraturan-organisasi');
     Route::get('/peraturan-organisasi/edit', [OrganisasiController::class, 'createPeraturanOrganisasi'])->name('edit-peraturan-organisasi');
     Route::post('/peraturan-organisasi/save', [OrganisasiController::class, 'updatePeraturanOrganisasi'])->name('save-peraturan-organisasi');
-
 
     Route::get('/tentang-organisasi', [OrganisasiController::class, 'tentangOrganisasi'])->name('tentang-organisasi');
     Route::get('/tentang-organisasi/edit', [OrganisasiController::class, 'createTentangOrganisasi'])->name('edit-tentang-organisasi');
@@ -60,9 +68,9 @@ Route::middleware(['auth:admin'])->group(function () {
 });
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::get('/peraturanOrganisasi', [HtmlController::class, 'indexPeraturanOrganisasi'])->name('peraturanOrganisasi');
-Route::get('/anggaranDasar', [HtmlController::class, 'indexAnggaranDasar'])->name('anggaranDasar');
-Route::get('/anggaranRumahTangga', [HtmlController::class, 'indexAnggaranRumahTangga'])->name('anggaranRumahTangga');
+// Route::get('/peraturanOrganisasi', [HtmlController::class, 'indexPeraturanOrganisasi'])->name('peraturanOrganisasi');
+// Route::get('/anggaranDasar', [HtmlController::class, 'indexAnggaranDasar'])->name('anggaranDasar');
+// Route::get('/anggaranRumahTangga', [HtmlController::class, 'indexAnggaranRumahTangga'])->name('anggaranRumahTangga');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/test-log', function () {

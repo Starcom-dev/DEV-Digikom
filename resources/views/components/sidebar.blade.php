@@ -139,10 +139,10 @@
                <div class="collapse {{ request()->is('anggaran-dasar*') || request()->is('anggaran-rumah-tangga*') || request()->is('peraturan-organisasi*') ? 'show' : '' }}"
                    id="ad_art">
                    <ul class="nav flex-column sub-menu">
-                       <li class="nav-item"><a class="nav-link" href="{{ route('anggaran-dasar.index') }}">Anggaran
+                       <li class="nav-item"><a class="nav-link" href="{{ route('anggaran-dasar') }}">Anggaran
                                Dasar</a></li>
-                       <li class="nav-item"><a class="nav-link"
-                               href="{{ route('anggaran-rumah-tangga.index') }}">Anggaran Rumah Tangga</a></li>
+                       <li class="nav-item"><a class="nav-link" href="{{ route('anggaran-rumah-tangga') }}">Anggaran
+                               Rumah Tangga</a></li>
                        <li class="nav-item"><a class="nav-link" href="{{ route('peraturan-organisasi') }}">Peraturan
                                Organisasi</a></li>
                        <li class="nav-item"><a class="nav-link" href="{{ route('tentang-organisasi') }}">Tentang

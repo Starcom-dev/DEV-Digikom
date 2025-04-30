@@ -10,9 +10,50 @@ class OrganisasiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function anggaranDasar()
     {
-        //
+        $organisasi = Organisasi::first();
+        $idOrganisasi = $organisasi->id ?? '';
+        $anggaranDasar = $organisasi->anggaran_dasar ?? '';
+        return view('pages.organisasi.anggaran_dasar.index', compact('idOrganisasi', 'anggaranDasar'));
+    }
+
+    public function createAnggaranDasar()
+    {
+        $organisasi = Organisasi::first();
+        $anggaranDasar = $organisasi->anggaran_dasar ?? '';
+        return view('pages.organisasi.anggaran_dasar.create', compact('anggaranDasar'));
+    }
+
+    public function updateAnggaranDasar(Request $request)
+    {
+        $organisasi = Organisasi::first();
+        $organisasi->anggaran_dasar = $request->anggaran_dasar;
+        $organisasi->save();
+        return redirect()->route('anggaran-dasar')->with('success', 'Anggaran dasar berhasil diperbarui!');
+    }
+
+    public function anggaranRumahTangga()
+    {
+        $organisasi = Organisasi::first();
+        $idOrganisasi = $organisasi->id ?? '';
+        $anggaranRumahTangga = $organisasi->anggaran_rumah_tangga ?? '';
+        return view('pages.organisasi.anggaran_rumah_tangga.index', compact('idOrganisasi', 'anggaranRumahTangga'));
+    }
+
+    public function createAnggaranRumahTangga()
+    {
+        $organisasi = Organisasi::first();
+        $anggaranRumahTangga = $organisasi->anggaran_rumah_tangga ?? '';
+        return view('pages.organisasi.anggaran_rumah_tangga.create', compact('anggaranRumahTangga'));
+    }
+
+    public function updateAnggaranRumahTangga(Request $request)
+    {
+        $organisasi = Organisasi::first();
+        $organisasi->anggaran_rumah_tangga = $request->anggaran_rumah_tangga;
+        $organisasi->save();
+        return redirect()->route('anggaran-rumah-tangga')->with('success', 'Anggaran dasar berhasil diperbarui!');
     }
 
     public function peraturanOrganisasi()
