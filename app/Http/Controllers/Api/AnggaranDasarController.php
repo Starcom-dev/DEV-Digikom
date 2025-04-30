@@ -14,7 +14,7 @@ class AnggaranDasarController extends Controller
     {
         //get all posts
         // $anggaran_dasar = AnggaranDasar::latest()->paginate(5);
-        $anggaran_dasar = AnggaranDasar::with('creator')->get();
+        $anggaran_dasar = AnggaranDasar::with('creator')->orderBy('id', 'ASC')->get();
         //return collection of posts as a resource
         return new AnggaranDasarResource(true, 'List Data Anggaran Dasar', $anggaran_dasar);
     }
@@ -35,5 +35,4 @@ class AnggaranDasarController extends Controller
         // Return data anggaran_dasar
         return new AnggaranDasarResource(true, 'Detail Data Anggaran Dasar', $anggaran_dasar);
     }
-
 }
