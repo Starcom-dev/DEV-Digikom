@@ -1,14 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 //import model product
-use App\Models\Usaha; 
-use App\Models\User; 
+use App\Models\Usaha;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\BidangUsaha;
+use App\Models\CategoryUsaha;
 use Illuminate\Support\Facades\Storage;
 
 //import return type View
@@ -16,7 +19,7 @@ use Illuminate\View\View;
 
 class UsahaController extends Controller
 {
-    public function index(Request $request) : View
+    public function index(Request $request): View
     {
         // Ambil input untuk search dan sort
         $search = $request->input('search');
@@ -25,11 +28,11 @@ class UsahaController extends Controller
         $perPage = $request->input('per_page', 10);
         // Query dengan pencarian dan pengurutan
         $usaha = Usaha::when($search, function ($query, $search) {
-                return $query->where('nama_usaha', 'like', "%{$search}%");
-            })
+            return $query->where('nama_usaha', 'like', "%{$search}%");
+        })
             ->orderBy($sortBy, $order)
             ->paginate($perPage);
-    
+
         return view('pages.usaha.index', compact('usaha', 'search', 'sortBy', 'order'));
     }
 
@@ -40,47 +43,17 @@ class UsahaController extends Controller
         return view('pages.usaha.show', compact('usaha'));
     }
 
-     // Menampilkan form untuk membuat usaha baru
+    // Menampilkan form untuk membuat usaha baru
     public function create()
-    {        
-            $users = User::all();
-            return view('pages.usaha.create', compact('users'));
+    {
+        $users = User::all();
+        $categories = CategoryUsaha::all();
+        $bidangs = BidangUsaha::all();
+        return view('pages.usaha.create', compact('users', 'categories', 'bidangs'));
     }
 
-     // Menyimpan usaha baru
+    // Menyimpan usaha baru
     public function store(Request $request)
-    {
-         // Validasi input
-        $request->validate([
-            'nama_usaha' => 'required|unique:usahas,nama_usaha',
-            'waktu_operational' => 'required',
-            'lokasi_usaha' => 'required',
-            'nomor_usaha' => 'required',
-            'deskripsi' => 'required',
-            'user_id' => 'required',
-        ]);
-
-         // Menyimpan data usaha ke database
-        $usaha = new usaha;
-        $usaha->nama_usaha = $request->nama_usaha;
-        $usaha->waktu_operational = $request->waktu_operational;
-        $usaha->lokasi_usaha = $request->lokasi_usaha;
-        $usaha->nomor_usaha = $request->nomor_usaha;
-        $usaha->deskripsi = $request->deskripsi;
-        $usaha->user_id = $request->user_id;
-        $usaha->save();
-         // Redirect setelah berhasil menyimpan
-        return redirect()->route('usaha.index')->with('success', 'usaha berhasil dibuat!');
-    }
-
-    public function edit($id)
-    {
-        $users = User::all();// Ambil usaha berdasarkan ID
-        $usaha = Usaha::findOrFail($id);
-        return view('pages.usaha.edit', compact('users', 'usaha'));
-    }
-
-    public function update(Request $request, $id)
     {
         // Validasi input
         $request->validate([
@@ -89,19 +62,61 @@ class UsahaController extends Controller
             'lokasi_usaha' => 'required',
             'nomor_usaha' => 'required',
             'deskripsi' => 'required',
+            'user_id' => 'required',
+            'bidang_usaha' => 'required',
+            'kategori_usaha' => 'required',
+        ]);
+
+        // Menyimpan data usaha ke database
+        $usaha = new usaha;
+        $usaha->nama_usaha = $request->nama_usaha;
+        $usaha->waktu_operational = $request->waktu_operational;
+        $usaha->lokasi_usaha = $request->lokasi_usaha;
+        $usaha->nomor_usaha = $request->nomor_usaha;
+        $usaha->deskripsi = $request->deskripsi;
+        $usaha->user_id = $request->user_id;
+        $usaha->category = $request->kategori_usaha;
+        $usaha->bidang = $request->bidang_usaha;
+        $usaha->save();
+        // Redirect setelah berhasil menyimpan
+        return redirect()->route('usaha.index')->with('success', 'usaha berhasil dibuat!');
+    }
+
+    public function edit($id)
+    {
+        $users = User::all(); // Ambil usaha berdasarkan ID
+        $usaha = Usaha::with(['categoryUsaha', 'bidangUsaha'])->where('id', $id)->first();
+        $categories = CategoryUsaha::all();
+        $bidangs = BidangUsaha::all();
+        return view('pages.usaha.edit', compact('users', 'usaha', 'categories', 'bidangs'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $usaha = Usaha::findOrFail($id);
+        // Validasi input
+        $request->validate([
+            'nama_usaha' => 'required|unique:usahas,nama_usaha,' . $usaha->id,
+            'waktu_operational' => 'required',
+            'lokasi_usaha' => 'required',
+            'nomor_usaha' => 'required',
+            'deskripsi' => 'required',
             // 'user_id' => 'required',
+            'bidang_usaha' => 'required',
+            'kategori_usaha' => 'required',
         ]);
         // Cari usaha berdasarkan ID
-        $usaha = Usaha::findOrFail($id);
 
-            // Menyimpan data usaha ke database
-            $usaha->nama_usaha = $request->nama_usaha;
-            $usaha->waktu_operational = $request->waktu_operational;
-            $usaha->lokasi_usaha = $request->lokasi_usaha;
-            $usaha->nomor_usaha = $request->nomor_usaha;
-            $usaha->deskripsi = $request->deskripsi;
-            // $usaha->user_id = $request->user_id;
-            $usaha->save();
+        // Menyimpan data usaha ke database
+        $usaha->nama_usaha = $request->nama_usaha;
+        $usaha->waktu_operational = $request->waktu_operational;
+        $usaha->lokasi_usaha = $request->lokasi_usaha;
+        $usaha->nomor_usaha = $request->nomor_usaha;
+        $usaha->deskripsi = $request->deskripsi;
+        $usaha->category = $request->kategori_usaha;
+        $usaha->bidang = $request->bidang_usaha;
+        // $usaha->user_id = $request->user_id;
+        $usaha->save();
 
         return redirect()->route('usaha.index')->with('success', 'usaha berhasil diperbarui!');
     }
