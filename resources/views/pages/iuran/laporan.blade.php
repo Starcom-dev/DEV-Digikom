@@ -29,7 +29,7 @@
                                 <div class="p-2">
                                     <select name="year" class="form-control text-white">
                                         <option value="" style>-- Select Year --</option>
-                                        @foreach (['2023', '2024', '2025', '2026', '2027'] as $year)
+                                        @foreach (['2025', '2026'] as $year)
                                             <option value="{{ $year }}"
                                                 {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}
                                             </option>
