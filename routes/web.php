@@ -48,6 +48,12 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/tentang-organisasi/edit', [OrganisasiController::class, 'createTentangOrganisasi'])->name('edit-tentang-organisasi');
     Route::post('/tentang-organisasi/save', [OrganisasiController::class, 'updateTentangOrganisasi'])->name('save-tentang-organisasi');
 
+    Route::get('/privacy-edit', [OrganisasiController::class, 'privacy'])->name('privacy-edit');
+    Route::post('/privacy-save', [OrganisasiController::class, 'updatePrivacy'])->name('privacy-save');
+
+    Route::get('/syaratketentuanaplikasi-edit', [OrganisasiController::class, 'syaratAplikasi'])->name('syaratketentuanaplikasi-edit');
+    Route::post('/syaratketentuanaplikasi-save', [OrganisasiController::class, 'updateSyaratAplikasi'])->name('syaratketentuanaplikasi-save');
+
     Route::resource('/jabatan', \App\Http\Controllers\JabatanController::class);
     Route::post('/anggota/toggle-suspend/{id}', [UserController::class, 'toggleSuspend'])->name('anggota.toggleSuspend');
 

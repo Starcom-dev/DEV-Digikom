@@ -102,52 +102,35 @@ class OrganisasiController extends Controller
         return redirect()->route('tentang-organisasi')->with('success', 'Tentang Organisasi berhasil diperbarui!');
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function privacy()
     {
-        //
+        $organisasi = Organisasi::first();
+        $idOrganisasi = $organisasi->id ?? '';
+        $privacy = $organisasi->privacy ?? '';
+        return view('pages.organisasi.privacy.index', compact('idOrganisasi', 'privacy'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function updatePrivacy(Request $request)
     {
-        //
+        $organisasi = Organisasi::first();
+        $organisasi->privacy = $request->privacy;
+        $organisasi->save();
+        return redirect()->route('privacy-edit')->with('success', 'Privacy berhasil diperbarui!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function syaratAplikasi()
     {
-        //
+        $organisasi = Organisasi::first();
+        $idOrganisasi = $organisasi->id ?? '';
+        $syaratApk = $organisasi->syarat_ketentuan_aplikasi ?? '';
+        return view('pages.organisasi.syarat_ketentuan_aplikasi.index', compact('idOrganisasi', 'syaratApk'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function updateSyaratAplikasi(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $organisasi = Organisasi::first();
+        $organisasi->syarat_ketentuan_aplikasi = $request->syarat_apk;
+        $organisasi->save();
+        return redirect()->route('syaratketentuanaplikasi-edit')->with('success', 'Syarat ketentuan aplikasi berhasil diperbarui!');
     }
 }

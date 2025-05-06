@@ -133,7 +133,7 @@
                    <span class="menu-icon">
                        <i class="mdi mdi-playlist-play"></i>
                    </span>
-                   <span class="menu-title">AD ART</span>
+                   <span class="menu-title">Organisasi</span>
                    <i class="menu-arrow"></i>
                </a>
                <div class="collapse {{ request()->is('anggaran-dasar*') || request()->is('anggaran-rumah-tangga*') || request()->is('peraturan-organisasi*') ? 'show' : '' }}"
@@ -150,6 +150,29 @@
                    </ul>
                </div>
            </li>
+
+           {{-- Privacy --}}
+           <li class="nav-item menu-items">
+               <a class="nav-link {{ request()->is('privacy*') ? 'active' : '' }}"
+                   href="{{ route('privacy-edit') }}">
+                   <span class="menu-icon">
+                       <i class="mdi mdi-file-document-box"></i>
+                   </span>
+                   <span class="menu-title">Privacy</span>
+               </a>
+           </li>
+           {{-- Privacy --}}
+           <li class="nav-item menu-items">
+               <a class="nav-link {{ request()->is('syaratketentuanaplikasi*') ? 'active' : '' }}"
+                   href="{{ route('syaratketentuanaplikasi-edit') }}">
+                   <span class="menu-icon">
+                       <i class="mdi mdi-file-document-box"></i>
+                   </span>
+                   <span class="menu-title">Syarat Ketentuan Apk</span>
+               </a>
+           </li>
+
+
        </ul>
    </nav>
 

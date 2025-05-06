@@ -18,6 +18,10 @@ class Organisasi extends Model
      */
     protected $fillable = [
         'tentang_organisasi',
-        'peraturan_organisasi'
+        'peraturan_organisasi',
+        'anggaran_dasar',
+        'anggaran_rumah_tangga',
+        'privacy',
+        'syarat_ketentuan_aplikasi'
     ];
 }
