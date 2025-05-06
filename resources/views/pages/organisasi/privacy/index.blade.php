@@ -7,7 +7,7 @@
 <div class="main-panel">
     <div class="content-wrapper" style="background-color: #D1D1D1;">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="card-title text-black">Privacy:</h3>
+            <h3 class="card-title text-black">Syarat & Ketentuan Aplikasi:</h3>
         </div>
         @session('success')
             <div class="alert alert-success" role="alert">
@@ -21,7 +21,7 @@
                         @csrf
                         <input type="hidden" name="id" value="{{$idOrganisasi}}">
                         <div class="mb-4 text-right">
-                            <button class="btn btn-primary">Simpan Privacy</button>
+                            <button class="btn btn-primary">Simpan Data</button>
                         </div>
                         <div class="mb-4 text-center">
                             <textarea id="myeditorinstance" name="privacy">{{{ $privacy }}}</textarea>

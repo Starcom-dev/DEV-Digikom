@@ -158,11 +158,11 @@
                    <span class="menu-icon">
                        <i class="mdi mdi-file-document-box"></i>
                    </span>
-                   <span class="menu-title">Privacy</span>
+                   <span class="menu-title">Syarat & Ketentuan</span>
                </a>
            </li>
            {{-- Privacy --}}
-           <li class="nav-item menu-items">
+           {{-- <li class="nav-item menu-items">
                <a class="nav-link {{ request()->is('syaratketentuanaplikasi*') ? 'active' : '' }}"
                    href="{{ route('syaratketentuanaplikasi-edit') }}">
                    <span class="menu-icon">
@@ -170,7 +170,7 @@
                    </span>
                    <span class="menu-title">Syarat Ketentuan Apk</span>
                </a>
-           </li>
+           </li> --}}
 
 
        </ul>
