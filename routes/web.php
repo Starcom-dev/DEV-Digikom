@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\SyaratKetentuanAplikasi;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
@@ -90,3 +91,4 @@ Route::get('/test-log', function () {
 
 Route::get('/privacy', [PrivacyController::class, 'privacy'])->name('privacy');
 Route::get('/privacy/remove', [PrivacyController::class, 'remove'])->name('privacy.remove');
+Route::get('/syarat-ketentuan-penggunaan-aplikasi', [SyaratKetentuanAplikasi::class, 'syaratApk']);
